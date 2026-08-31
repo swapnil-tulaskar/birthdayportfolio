@@ -19,7 +19,7 @@ I Love You Forever ❤️`;
 export function LoveLetter() {
   return (
     <section id="letter" className="relative z-10 mx-auto max-w-3xl px-5 py-20 sm:py-28">
-      <h2 className="text-center font-script text-4xl text-rose-grad sm:text-8xl">A Love Letter</h2>
+      <h2 className="text-center font-script text-4xl text-rose-grad sm:text-6xl">A Love Letter</h2>
       <div
         className="glass mt-10 rounded-[2rem] p-7 sm:p-12"
         style={{ boxShadow: "var(--shadow-glow)" }}

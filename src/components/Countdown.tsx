@@ -71,9 +71,13 @@ export function Countdown() {
   return (
     <section className="mx-auto max-w-4xl px-4 text-center">
 
-      <h2 className="font-display text-3xl text-gold sm:text-4xl">
-        Time Together ❤️
+      <h2 className="font-display text-2xl text-gold sm:text-4xl">
+        Time Together from
       </h2>
+      
+        <p className="mt-2 font-display text-6xl text-gold">
+          ❤️ 25 February 2022 ❤️
+        </p>
 
       <p className="mt-2 text-sm text-muted-foreground">
         Every second with you has been a gift.
@@ -108,10 +112,6 @@ export function Countdown() {
       <div className="mt-6 text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
           Our journey started
-        </p>
-
-        <p className="mt-2 font-display text-lg text-gold">
-          ❤️ 25 February 2022 ❤️
         </p>
       </div>
 

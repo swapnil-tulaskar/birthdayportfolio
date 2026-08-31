@@ -11,7 +11,7 @@ const MESSAGE = `माझ्या प्रत्येक धडधडीत 
 तू माझ्या आयुष्याची सर्वात सुंदर भेट आहेस...
 
 माझ्या प्रत्येक क्षणाला खास बनवल्याबद्दल धन्यवाद,
-वाढदिवसाच्या शुभेच्छा माझ्या राणी... ❤️`;
+वाढदिवसाच्या शुभेच्छा माझी राणी... ❤️ `;
 
 /** Positions around a heart outline (percent of the frame). */
 const RING = [
@@ -99,7 +99,7 @@ export function EntryScreen({ onSurprise }: { onSurprise: () => void }) {
         className="animate-heartbeat group relative mt-12 rounded-full px-8 py-5 font-display text-lg font-semibold text-primary-foreground transition sm:text-2xl"
         style={{ background: "var(--gradient-rose)", boxShadow: "var(--shadow-glow)" }}
       >
-        ❤️ Click Here for Your Surprise ❤️
+        ❤️ After clicking the Song Button then Click Here for Your Surprise ❤️
         <span aria-hidden className="pointer-events-none absolute inset-0 overflow-visible">
           {hoverHearts > 0 &&
             Array.from({ length: 10 }, (_, i) => (
