@@ -131,6 +131,9 @@ export function FinalSurprise() {
           >
             Forever &amp; Always ❤️
           </p>
+          <p className="animate-rise-in mt-6 font-display text-lg text-muted-foreground sm:text-4xl">
+            Once Again Happy Birthday My Beautiful Wife ❤️
+          </p>
         </div>
       )}
     </section>
