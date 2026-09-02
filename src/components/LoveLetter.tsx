@@ -18,18 +18,85 @@ I Love You Forever ❤️`;
 
 export function LoveLetter() {
   return (
-    <section id="letter" className="relative z-10 mx-auto max-w-3xl px-5 py-20 sm:py-28">
-      <h2 className="text-center font-script text-4xl text-rose-grad sm:text-6xl">A Love Letter</h2>
-      <div
-        className="glass mt-10 rounded-[2rem] p-7 sm:p-12"
-        style={{ boxShadow: "var(--shadow-glow)" }}
+    <section
+      id="letter"
+      className="
+        relative
+        z-10
+        mx-auto
+        w-full
+        max-w-3xl
+        overflow-hidden
+        px-3
+        py-14
+        sm:px-5
+        sm:py-20
+        md:py-24
+        lg:py-28
+      "
+    >
+      <h2
+        className="
+          text-center
+          font-script
+          text-4xl
+          leading-tight
+          text-rose-grad
+          sm:text-5xl
+          md:text-6xl
+        "
       >
-        <div className="mb-6 text-center text-2xl">💌</div>
+        A Love Letter
+      </h2>
+
+      <div
+        className="
+          glass
+          mt-7
+          w-full
+          overflow-hidden
+          rounded-[1.5rem]
+          p-5
+          sm:mt-10
+          sm:rounded-[2rem]
+          sm:p-8
+          md:p-10
+          lg:p-12
+        "
+        style={{
+          boxShadow: "var(--shadow-glow)",
+        }}
+      >
+        <div
+          className="
+            mb-5
+            text-center
+            text-2xl
+            sm:mb-6
+            sm:text-3xl
+          "
+          aria-hidden="true"
+        >
+          💌
+        </div>
+
         <Typewriter
           whenVisible
           speed={22}
           text={LETTER}
-          className="whitespace-pre-wrap font-display text-lg leading-relaxed text-foreground/90 sm:text-xl"
+          className="
+            w-full
+            max-w-full
+            whitespace-pre-wrap
+            break-words
+            font-display
+            text-[15px]
+            leading-8
+            text-foreground/90
+            sm:text-lg
+            sm:leading-relaxed
+            md:text-xl
+          "
         />
       </div>
     </section>

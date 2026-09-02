@@ -1,46 +1,198 @@
-import { photos } from "../lib/photos";
 import { timelinePhotos } from "../lib/timelinePhotos";
 import { timeline } from "../lib/timeline";
 
 export function Timeline() {
   return (
-    <section id="timeline" className="relative z-10 mx-auto max-w-5xl px-5 py-20 sm:py-28">
-      <h2 className="text-center font-script text-4xl text-rose-grad sm:text-6xl">Our Memories</h2>
-      <p className="mt-3 text-center font-display text-lg text-muted-foreground">
+    <section
+      id="timeline"
+      className="
+        relative
+        z-10
+        mx-auto
+        w-full
+        max-w-5xl
+        overflow-hidden
+        px-3
+        py-14
+        sm:px-5
+        sm:py-20
+        md:py-24
+        lg:py-28
+      "
+    >
+      <h2
+        className="
+          text-center
+          font-script
+          text-4xl
+          leading-tight
+          text-rose-grad
+          sm:text-5xl
+          md:text-6xl
+        "
+      >
+        Our Memories
+      </h2>
+
+      <p
+        className="
+          mx-auto
+          mt-3
+          max-w-[90vw]
+          text-center
+          font-display
+          text-sm
+          leading-relaxed
+          text-muted-foreground
+          sm:text-base
+          md:text-lg
+        "
+      >
         A little timeline of us.
       </p>
 
-      <div className="relative mt-14">
+      <div className="relative mt-9 sm:mt-14">
+        {/* Center timeline line on desktop */}
         <div
-          className="absolute left-5 top-0 hidden h-full w-px sm:left-1/2 sm:block"
-          style={{ background: "var(--gradient-gold)", opacity: 0.5 }}
+          className="
+            absolute
+            left-1/2
+            top-0
+            hidden
+            h-full
+            w-px
+            -translate-x-1/2
+            sm:block
+          "
+          style={{
+            background: "var(--gradient-gold)",
+            opacity: 0.5,
+          }}
         />
-        <ol className="space-y-10">
+
+        <ol className="space-y-8 sm:space-y-10 md:space-y-12">
           {timeline.map((item, i) => {
-            const photo = timelinePhotos[i % timelinePhotos.length]!;
+            const photo =
+              timelinePhotos[i % timelinePhotos.length]!;
+
             const flip = i % 2 === 1;
+
             return (
               <li
                 key={item.title}
-                className={`animate-rise-in grid gap-5 sm:grid-cols-2 sm:items-center ${
-                  flip ? "sm:[&>*:first-child]:order-2" : ""
-                }`}
-                style={{ animationDelay: `${i * 120}ms` }}
+                className={`
+                  animate-rise-in
+                  grid
+                  gap-4
+                  sm:grid-cols-2
+                  sm:items-center
+                  sm:gap-8
+                  ${
+                    flip
+                      ? "sm:[&>*:first-child]:order-2"
+                      : ""
+                  }
+                `}
+                style={{
+                  animationDelay: `${i * 120}ms`,
+                }}
               >
-                <div className="glass overflow-hidden rounded-3xl p-2">
-                  <img
-                    src={photo.src}
-                    alt={item.title}
-                    loading="lazy"
-                    className="w-full h-auto rounded-2xl object-contain transition duration-700 hover:scale-105"
-                  />
+                {/* Photo */}
+                <div
+                  className="
+                    glass
+                    w-full
+                    overflow-hidden
+                    rounded-2xl
+                    p-1.5
+                    sm:rounded-3xl
+                    sm:p-2
+                  "
+                  style={{
+                    boxShadow: "var(--shadow-soft)",
+                  }}
+                >
+                  <div className="overflow-hidden rounded-xl sm:rounded-2xl">
+                    <img
+                      src={photo.src}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                      className="
+                        block
+                        h-auto
+                        w-full
+                        rounded-xl
+                        object-contain
+                        transition
+                        duration-700
+                        active:scale-[0.99]
+                        sm:rounded-2xl
+                        sm:hover:scale-105
+                      "
+                    />
+                  </div>
                 </div>
-                <div className={`glass rounded-3xl p-6 ${flip ? "sm:text-right" : ""}`}>
-                  <div className="text-3xl">{item.icon}</div>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-gold sm:text-3xl">
+
+                {/* Memory text */}
+                <div
+                  className={`
+                    glass
+                    w-full
+                    overflow-hidden
+                    rounded-2xl
+                    p-5
+                    sm:rounded-3xl
+                    sm:p-7
+                    md:p-8
+                    ${flip ? "sm:text-right" : ""}
+                  `}
+                  style={{
+                    boxShadow: "var(--shadow-soft)",
+                  }}
+                >
+                  <div
+                    className="
+                      text-2xl
+                      sm:text-3xl
+                    "
+                    aria-hidden="true"
+                  >
+                    {item.icon}
+                  </div>
+
+                  <h3
+                    className="
+                      mt-2
+                      break-words
+                      font-display
+                      text-xl
+                      font-semibold
+                      leading-tight
+                      text-gold
+                      sm:text-2xl
+                      md:text-3xl
+                    "
+                  >
                     {item.title}
                   </h3>
-                  <p className="mt-2 font-body text-muted-foreground">{item.text}</p>
+
+                  <p
+                    className="
+                      mt-2
+                      break-words
+                      font-body
+                      text-sm
+                      leading-7
+                      text-muted-foreground
+                      sm:text-base
+                      sm:leading-relaxed
+                      md:text-lg
+                    "
+                  >
+                    {item.text}
+                  </p>
                 </div>
               </li>
             );
