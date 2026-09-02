@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { photos } from "@/lib/photos";
 import { playChime } from "@/lib/sfx";
 import { HeartBurst } from "./HeartBurst";
@@ -100,22 +100,33 @@ const PROMISES = [
 ];
 
 const NO_MESSAGES = [
-  "Are you sure?",
-  "Really?",
-  "Madhu... seriously?",
-  "Okay... I'll ask one more time.",
-  "I know your answer is YES.",
+  {
+    text: "Are you sure?",
+    emoji: "🥺❤️",
+  },
+  {
+    text: "Really?",
+    emoji: "😭❤️",
+  },
+  {
+    text: "Madhu... seriously?",
+    emoji: "😂",
+  },
+  {
+    text: "Okay... I'll ask one more time.",
+    emoji: "❤️",
+  },
+  {
+    text: "I know your answer is YES.",
+    emoji: "😌❤️",
+  },
 ];
 
-const NO_EMOJIS = [
-  "🥺❤️",
-  "😭❤️",
-  "😂",
-  "❤️",
-  "😌❤️",
-];
+type FinalSurpriseProps = {
+  onDone?: () => void;
+};
 
-export function FinalSurprise() {
+export function FinalSurprise({ onDone }: FinalSurpriseProps) {
   const [opened, setOpened] = useState(false);
   const [promiseIndex, setPromiseIndex] = useState(-1);
   const [daysOpen, setDaysOpen] = useState(false);
@@ -124,6 +135,8 @@ export function FinalSurprise() {
   const [chosen, setChosen] = useState(false);
 
   const best = photos[16]!;
+
+  const doneCalled = useRef(false);
 
   const openSurprise = () => {
     playChime(660);
@@ -155,6 +168,23 @@ export function FinalSurprise() {
   };
 
   const noScale = Math.max(0, 1 - noCount * 0.2);
+
+  /*
+   * The final surprise is considered complete after the final
+   * HeartBurst area has been displayed for a short moment.
+   */
+  useEffect(() => {
+    if (!chosen || doneCalled.current) return;
+
+    const timer = window.setTimeout(() => {
+      if (doneCalled.current) return;
+
+      doneCalled.current = true;
+      onDone?.();
+    }, 2500);
+
+    return () => window.clearTimeout(timer);
+  }, [chosen, onDone]);
 
   return (
     <section
@@ -262,6 +292,10 @@ export function FinalSurprise() {
                 text-7xl
                 sm:text-8xl
               "
+              style={{
+                fontFamily:
+                  '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+              }}
             >
               🎁
             </span>
@@ -384,6 +418,10 @@ export function FinalSurprise() {
                       animate-heartbeat
                       text-6xl sm:text-7xl
                     "
+                    style={{
+                      fontFamily:
+                        '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                    }}
                   >
                     💌
                   </span>
@@ -717,49 +755,70 @@ export function FinalSurprise() {
                   className="
                     animate-rise-in
                     mx-auto mt-7
-                    flex w-full
-                    max-w-[96vw]
-                    flex-wrap
+                    flex min-h-[82px]
+                    w-full
+                    max-w-[calc(100vw-28px)]
                     items-center
                     justify-center
-                    gap-x-3
-                    gap-y-2
-                    px-2
+                    rounded-2xl
+                    border border-white/10
+                    bg-white/5
+                    px-4 py-4
                     text-center
+                    backdrop-blur-md
+                    sm:min-h-[96px]
+                    sm:max-w-xl
+                    sm:rounded-3xl
+                    sm:px-6 sm:py-5
                   "
+                  style={{
+                    boxShadow: "var(--shadow-soft)",
+                  }}
                 >
-                  <span
+                  <p
                     className="
-                      break-words
-                      font-display
-                      text-2xl
-                      font-bold
-                      leading-tight
-                      text-rose-grad
-                      sm:text-3xl
-                      md:text-4xl
+                      m-0
+                      flex w-full
+                      flex-wrap
+                      items-center
+                      justify-center
+                      gap-x-3 gap-y-2
+                      text-center
                     "
                   >
-                    {NO_MESSAGES[noCount - 1]}
-                  </span>
+                    <span
+                      className="
+                        break-words
+                        font-display
+                        text-[1.45rem]
+                        font-bold
+                        leading-tight
+                        text-rose-grad
+                        sm:text-3xl
+                        md:text-4xl
+                      "
+                    >
+                      {NO_MESSAGES[noCount - 1]!.text}
+                    </span>
 
-                  <span
-                    aria-hidden
-                    className="
-                      shrink-0
-                      animate-heartbeat
-                      text-3xl
-                      leading-none
-                      sm:text-4xl
-                      md:text-5xl
-                    "
-                    style={{
-                      fontFamily:
-                        '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                    }}
-                  >
-                    {NO_EMOJIS[noCount - 1]}
-                  </span>
+                    <span
+                      aria-hidden
+                      className="
+                        shrink-0
+                        animate-heartbeat
+                        text-[1.9rem]
+                        leading-none
+                        sm:text-4xl
+                        md:text-5xl
+                      "
+                      style={{
+                        fontFamily:
+                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                      }}
+                    >
+                      {NO_MESSAGES[noCount - 1]!.emoji}
+                    </span>
+                  </p>
                 </div>
               )}
 
@@ -1082,8 +1141,7 @@ export function FinalSurprise() {
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     color: "transparent",
-                    animation:
-                      "shimmer 4s linear infinite",
+                    animation: "shimmer 4s linear infinite",
                   }}
                 >
                   Promise Made.
@@ -1165,10 +1223,8 @@ export function FinalSurprise() {
                       "
                       style={{
                         ...heartMaskStyle,
-                        background:
-                          "var(--gradient-rose)",
-                        boxShadow:
-                          "var(--shadow-glow)",
+                        background: "var(--gradient-rose)",
+                        boxShadow: "var(--shadow-glow)",
                       }}
                     />
 
@@ -1231,10 +1287,8 @@ export function FinalSurprise() {
                       "
                       style={{
                         ...heartMaskStyle,
-                        background:
-                          "var(--gradient-rose)",
-                        boxShadow:
-                          "var(--shadow-glow)",
+                        background: "var(--gradient-rose)",
+                        boxShadow: "var(--shadow-glow)",
                       }}
                     />
 
@@ -1299,11 +1353,9 @@ export function FinalSurprise() {
                       background: "var(--gradient-rose)",
                       backgroundSize: "200% auto",
                       backgroundClip: "text",
-                      WebkitBackgroundClip:
-                        "text",
+                      WebkitBackgroundClip: "text",
                       color: "transparent",
-                      animation:
-                        "shimmer 4s linear infinite",
+                      animation: "shimmer 4s linear infinite",
                     }}
                   >
                     Forever &amp; Always ❤️

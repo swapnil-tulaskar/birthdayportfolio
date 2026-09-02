@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { Ambience } from "@/components/Ambience";
 import { Countdown } from "@/components/Countdown";
 import { EntryScreen } from "@/components/EntryScreen";
+import { Feedback } from "@/components/Feedback";
 import { FinalSurprise } from "@/components/FinalSurprise";
 import { Gallery } from "@/components/Gallery";
 import { HeartBurst } from "@/components/HeartBurst";
@@ -36,6 +37,7 @@ function Index() {
   const [letterOpened, setLetterOpened] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [bursting, setBursting] = useState(false);
+  const [surpriseDone, setSurpriseDone] = useState(false);
 
   const surprise = useCallback(() => {
     setBursting(true);
@@ -86,7 +88,14 @@ function Index() {
           <Timeline />
           <LoveLetter />
           <Countdown />
-          <FinalSurprise />
+
+          <FinalSurprise
+            onDone={() => {
+              setSurpriseDone(true);
+            }}
+          />
+
+          {surpriseDone && <Feedback />}
         </div>
       )}
 
