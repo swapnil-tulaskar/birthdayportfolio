@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 const DEFAULT_START = "2022-02-25T00:00:00";
@@ -44,11 +45,12 @@ type CountdownProps = {
 };
 
 export function Countdown({ visible = true }: CountdownProps) {
+  const [opened, setOpened] = useState(false);
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    // Countdown visible नसताना timer सुरू करू नका
-    if (!visible) return;
+    // Love Letter पूर्ण झाल्यावरच button available होईल
+    if (!visible || !opened) return;
 
     setNow(new Date());
 
@@ -57,10 +59,62 @@ export function Countdown({ visible = true }: CountdownProps) {
     }, 1000);
 
     return () => clearInterval(t);
-  }, [visible]);
+  }, [visible, opened]);
 
-  // Love Letter पूर्ण type होईपर्यंत Countdown दिसणार नाही
+  // Love Letter पूर्ण होईपर्यंत काहीही दाखवू नका
   if (!visible) return null;
+
+  // Button अजून click केलेला नसेल
+  if (!opened) {
+    return (
+      <section
+        className="
+          relative z-10 mx-auto w-full max-w-4xl
+          overflow-hidden px-3 py-10 text-center
+          sm:px-5 sm:py-14
+          md:py-20
+        "
+      >
+        <button
+          type="button"
+          onClick={() => setOpened(true)}
+          className="
+            glass animate-glow-pulse
+            mx-auto flex w-full max-w-[340px]
+            flex-col items-center justify-center
+            rounded-[2rem] px-6 py-6
+            transition duration-500
+            active:scale-95
+            sm:max-w-[420px] sm:px-8 sm:py-7
+            sm:hover:-translate-y-2
+          "
+          style={{ boxShadow: "var(--shadow-gold)" }}
+        >
+          <span className="animate-heartbeat text-5xl sm:text-6xl">
+            ❤️
+          </span>
+
+          <span
+            className="
+              mt-3 font-display text-lg font-semibold text-gold
+              sm:text-xl md:text-2xl
+            "
+          >
+            See Our Journey
+          </span>
+
+          <span
+            className="
+              mt-1 text-xs text-muted-foreground
+              sm:text-sm
+            "
+          >
+            ❤️ Every second together ❤️
+          </span>
+        </button>
+      </section>
+    );
+  }
 
   const from = new Date(DEFAULT_START);
 
@@ -95,8 +149,7 @@ export function Countdown({ visible = true }: CountdownProps) {
       <h2
         className="
           font-display text-xl leading-tight text-gold
-          sm:text-3xl
-          md:text-4xl
+          sm:text-3xl md:text-4xl
         "
       >
         Time Together from
@@ -105,9 +158,9 @@ export function Countdown({ visible = true }: CountdownProps) {
       <p
         className="
           mt-2 break-words
-          font-display text-3xl font-semibold leading-tight text-gold
-          sm:text-5xl
-          md:text-6xl
+          font-display text-3xl font-semibold
+          leading-tight text-gold
+          sm:text-5xl md:text-6xl
         "
       >
         ❤️ 25 February 2022 ❤️
@@ -117,8 +170,7 @@ export function Countdown({ visible = true }: CountdownProps) {
         className="
           mx-auto mt-3 max-w-[90vw]
           text-xs leading-relaxed text-muted-foreground
-          sm:text-sm
-          md:text-base
+          sm:text-sm md:text-base
         "
       >
         Every second with you has been a gift.
@@ -126,7 +178,8 @@ export function Countdown({ visible = true }: CountdownProps) {
 
       <div
         className="
-          mx-auto mt-7 grid w-full max-w-3xl grid-cols-3 gap-2
+          mx-auto mt-7 grid w-full max-w-3xl
+          grid-cols-3 gap-2
           sm:mt-9 sm:grid-cols-6 sm:gap-3
         "
       >
@@ -144,9 +197,9 @@ export function Countdown({ visible = true }: CountdownProps) {
           >
             <div
               className="
-                font-display text-xl font-bold text-gold tabular-nums
-                sm:text-2xl
-                md:text-3xl
+                font-display text-xl font-bold
+                text-gold tabular-nums
+                sm:text-2xl md:text-3xl
               "
             >
               {String(value).padStart(2, "0")}
@@ -155,7 +208,8 @@ export function Countdown({ visible = true }: CountdownProps) {
             <div
               className="
                 mt-1 truncate
-                text-[0.48rem] uppercase tracking-[0.12em]
+                text-[0.48rem] uppercase
+                tracking-[0.12em]
                 text-muted-foreground
                 sm:text-[0.55rem]
                 sm:tracking-[0.18em]
@@ -181,7 +235,8 @@ export function Countdown({ visible = true }: CountdownProps) {
       <div className="mt-6 text-center sm:mt-8">
         <p
           className="
-            text-[0.6rem] uppercase tracking-[0.16em]
+            text-[0.6rem] uppercase
+            tracking-[0.16em]
             text-muted-foreground
             sm:text-xs sm:tracking-[0.2em]
           "
