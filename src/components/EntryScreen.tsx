@@ -51,8 +51,8 @@ export function EntryScreen({ onSurprise }: { onSurprise: () => void }) {
                   className="h-full w-full p-[6%]"
                   style={{
                     ...heartMaskStyle,
-                    background: "var(--gradient-gold)",
-                    filter: "drop-shadow(0 0 14px oklch(0.84 0.13 82 / 0.7))",
+                    background: "linear-gradient(135deg, #ff1744, #d50000, #ff4d6d)",
+                    filter: "drop-shadow(0 0 14px rgba(255, 0, 50, 0.8))",
                   }}
                 >
                   <img
