@@ -37,7 +37,7 @@ export function Feedback() {
     if (!trimmed) return;
 
     const whatsappMessage =
-      `❤️ Birthday Surprise Feedback ❤️\n\n${trimmed}\n\n— From your love ❤️`;
+      `❤️ Birthday Surprise Feedback ❤️\n\n${trimmed}\n\n`;
 
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
       whatsappMessage,
