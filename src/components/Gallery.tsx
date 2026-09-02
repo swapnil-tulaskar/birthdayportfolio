@@ -5,23 +5,48 @@ import { photos } from "@/lib/photos";
 export function Gallery() {
   const [open, setOpen] = useState<number | null>(null);
 
-  // Preload images
+  // =========================================================
+  // RANDOM 21 PHOTOS FROM 50
+  // =========================================================
+  const [galleryPhotos] = useState(() => {
+    const shuffled = [...photos];
+
+    // Fisher-Yates shuffle
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      // TypeScript-safe swap
+      const temp = shuffled[i]!;
+      shuffled[i] = shuffled[j]!;
+      shuffled[j] = temp;
+    }
+
+    // Show only 21 random photos
+    return shuffled.slice(0, 21);
+  });
+
+  // =========================================================
+  // PRELOAD SELECTED 21 IMAGES
+  // =========================================================
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      photos.forEach((photo) => {
+      galleryPhotos.forEach((photo) => {
         const img = new Image();
         img.src = photo.src;
       });
     }, 500);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [galleryPhotos]);
 
-  // Lock background scroll when popup is open
+  // =========================================================
+  // LOCK BACKGROUND SCROLL WHEN POPUP IS OPEN
+  // =========================================================
   useEffect(() => {
     if (open === null) return;
 
     const originalOverflow = document.body.style.overflow;
+
     document.body.style.overflow = "hidden";
 
     return () => {
@@ -29,9 +54,18 @@ export function Gallery() {
     };
   }, [open]);
 
+  // =========================================================
+  // PREVENT EASY IMAGE DRAG / RIGHT CLICK
+  // =========================================================
   const noSave = {
-    onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
-    onDragStart: (e: React.DragEvent) => e.preventDefault(),
+    onContextMenu: (e: React.MouseEvent) => {
+      e.preventDefault();
+    },
+
+    onDragStart: (e: React.DragEvent) => {
+      e.preventDefault();
+    },
+
     draggable: false,
   };
 
@@ -53,7 +87,10 @@ export function Gallery() {
         lg:py-28
       "
     >
-      {/* Heading */}
+      {/* =====================================================
+          HEADING
+      ===================================================== */}
+
       <h2
         className="
           text-center
@@ -85,7 +122,10 @@ export function Gallery() {
         Every picture, a heartbeat we get to keep.
       </p>
 
-      {/* Gallery */}
+      {/* =====================================================
+          GALLERY - 21 RANDOM PHOTOS
+      ===================================================== */}
+
       <div
         className="
           mt-7
@@ -100,7 +140,7 @@ export function Gallery() {
           sm:[&>*]:mb-4
         "
       >
-        {photos.map((p, i) => (
+        {galleryPhotos.map((p, i) => (
           <button
             key={p.src}
             type="button"
@@ -180,7 +220,10 @@ export function Gallery() {
         ))}
       </div>
 
-      {/* FULLSCREEN POPUP */}
+      {/* =====================================================
+          FULLSCREEN POPUP
+      ===================================================== */}
+
       {open !== null &&
         createPortal(
           <div
@@ -210,18 +253,19 @@ export function Gallery() {
               WebkitBackdropFilter: "blur(18px)",
             }}
           >
-            {/* PHOTO */}
+            {/* SELECTED PHOTO */}
+
             <img
-              src={photos[open]!.src}
-              alt={photos[open]!.alt}
+              src={galleryPhotos[open]!.src}
+              alt={galleryPhotos[open]!.alt}
               {...noSave}
               onClick={(e) => e.stopPropagation()}
               className="
                 block
-                max-h-[92dvh]
-                max-w-[96vw]
                 h-auto
                 w-auto
+                max-h-[92dvh]
+                max-w-[96vw]
                 select-none
                 object-contain
                 rounded-xl
@@ -232,12 +276,14 @@ export function Gallery() {
               "
               style={{
                 userSelect: "none",
+                WebkitUserSelect: "none",
                 boxShadow:
                   "0 0 50px rgba(255, 50, 100, 0.45)",
               }}
             />
 
             {/* CLOSE BUTTON */}
+
             <button
               type="button"
               aria-label="Close photo"
@@ -257,6 +303,7 @@ export function Gallery() {
                 text-white
                 backdrop-blur-md
                 transition
+                hover:bg-black/80
                 active:scale-90
                 sm:right-5
                 sm:top-5
