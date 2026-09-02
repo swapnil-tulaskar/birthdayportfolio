@@ -100,11 +100,19 @@ const PROMISES = [
 ];
 
 const NO_MESSAGES = [
-  "Are you sure? 🥺❤️",
-  "Really? 😭❤️",
-  "Madhu... seriously? 😂",
-  "Okay... I'll ask one more time. ❤️",
-  "I know your answer is YES. 😌❤️",
+  "Are you sure?",
+  "Really?",
+  "Madhu... seriously?",
+  "Okay... I'll ask one more time.",
+  "I know your answer is YES.",
+];
+
+const NO_EMOJIS = [
+  "🥺❤️",
+  "😭❤️",
+  "😂",
+  "❤️",
+  "😌❤️",
 ];
 
 export function FinalSurprise() {
@@ -166,6 +174,7 @@ export function FinalSurprise() {
       {/* =========================================================
           OPENING
       ========================================================= */}
+
       {!opened && (
         <div className="flex w-full min-w-0 flex-col items-center">
           <p
@@ -288,6 +297,7 @@ export function FinalSurprise() {
       {/* =========================================================
           SURPRISE CONTENT
       ========================================================= */}
+
       {opened && (
         <div
           className="
@@ -300,6 +310,7 @@ export function FinalSurprise() {
           {/* =====================================================
               PROMISES
           ===================================================== */}
+
           {!daysOpen && (
             <div className="relative mx-auto w-full min-w-0">
               <p
@@ -426,7 +437,13 @@ export function FinalSurprise() {
                   >
                     <div
                       aria-hidden
-                      className="text-6xl sm:text-7xl"
+                      className="
+                        text-6xl sm:text-7xl
+                      "
+                      style={{
+                        fontFamily:
+                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                      }}
                     >
                       {PROMISES[promiseIndex]!.icon}
                     </div>
@@ -502,6 +519,7 @@ export function FinalSurprise() {
           {/* =====================================================
               FOR THE DAYS WHEN
           ===================================================== */}
+
           {daysOpen && !questionOpen && !chosen && (
             <div
               className="
@@ -621,8 +639,9 @@ export function FinalSurprise() {
           )}
 
           {/* =====================================================
-              YES / NO
+              YES / NO QUESTION
           ===================================================== */}
+
           {questionOpen && !chosen && (
             <div
               className="
@@ -640,6 +659,10 @@ export function FinalSurprise() {
                   animate-heartbeat
                   text-6xl sm:text-8xl
                 "
+                style={{
+                  fontFamily:
+                    '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                }}
               >
                 🥺❤️
               </div>
@@ -684,23 +707,65 @@ export function FinalSurprise() {
                 Be honest... 😌
               </p>
 
+              {/* =================================================
+                  NO MESSAGE
+              ================================================= */}
+
               {noCount > 0 && (
-                <p
+                <div
                   key={noCount}
                   className="
                     animate-rise-in
-                    mx-auto mt-6
-                    max-w-[92vw]
-                    break-words px-2
-                    font-display text-base
-                    font-semibold leading-7
-                    text-rose-grad
-                    sm:text-lg
+                    mx-auto mt-7
+                    flex w-full
+                    max-w-[96vw]
+                    flex-wrap
+                    items-center
+                    justify-center
+                    gap-x-3
+                    gap-y-2
+                    px-2
+                    text-center
                   "
                 >
-                  {NO_MESSAGES[noCount - 1]}
-                </p>
+                  <span
+                    className="
+                      break-words
+                      font-display
+                      text-2xl
+                      font-bold
+                      leading-tight
+                      text-rose-grad
+                      sm:text-3xl
+                      md:text-4xl
+                    "
+                  >
+                    {NO_MESSAGES[noCount - 1]}
+                  </span>
+
+                  <span
+                    aria-hidden
+                    className="
+                      shrink-0
+                      animate-heartbeat
+                      text-3xl
+                      leading-none
+                      sm:text-4xl
+                      md:text-5xl
+                    "
+                    style={{
+                      fontFamily:
+                        '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                    }}
+                  >
+                    {NO_EMOJIS[noCount - 1]}
+                  </span>
+                </div>
               )}
+
+              {/* =================================================
+                  YES / NO BUTTONS
+              ================================================= */}
 
               <div
                 className="
@@ -708,7 +773,9 @@ export function FinalSurprise() {
                   flex w-full max-w-[360px]
                   items-center justify-center
                   gap-3 px-2
-                  sm:mt-9 sm:max-w-none sm:gap-5
+                  sm:mt-9
+                  sm:max-w-none
+                  sm:gap-5
                 "
               >
                 <button
@@ -718,12 +785,14 @@ export function FinalSurprise() {
                     shrink-0
                     rounded-full
                     px-7 py-4
-                    font-display text-base
+                    font-display
+                    text-base
                     font-semibold
                     text-primary-foreground
                     transition-all duration-300
                     active:scale-90
-                    sm:px-10 sm:py-4
+                    sm:px-10
+                    sm:py-4
                     sm:text-lg
                   "
                   style={{
@@ -740,7 +809,8 @@ export function FinalSurprise() {
                     onClick={chooseNo}
                     aria-label="No"
                     className="
-                      shrink-0 whitespace-nowrap
+                      shrink-0
+                      whitespace-nowrap
                       rounded-full
                       border border-white/15
                       bg-white/5
@@ -795,7 +865,8 @@ export function FinalSurprise() {
                       text-xs italic
                       leading-6
                       text-muted-foreground
-                      sm:mt-6 sm:text-sm
+                      sm:mt-6
+                      sm:text-sm
                     "
                   >
                     The NO button is getting shy... 🙈💕
@@ -809,10 +880,13 @@ export function FinalSurprise() {
                     mx-auto mt-6
                     max-w-[92vw]
                     break-words px-2
-                    font-display text-sm
-                    font-semibold leading-7
+                    font-display
+                    text-sm
+                    font-semibold
+                    leading-7
                     text-rose-grad
-                    sm:mt-7 sm:text-base
+                    sm:mt-7
+                    sm:text-base
                   "
                 >
                   Okay... NO has officially disappeared. 😂❤️
@@ -826,6 +900,7 @@ export function FinalSurprise() {
           {/* =====================================================
               FINAL YES
           ===================================================== */}
+
           {chosen && (
             <div
               className="
@@ -849,13 +924,16 @@ export function FinalSurprise() {
                   text-center
                 "
               >
-                {/* BIG HEART */}
                 <div
                   aria-hidden
                   className="
                     animate-heartbeat
                     text-7xl sm:text-8xl
                   "
+                  style={{
+                    fontFamily:
+                      '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+                  }}
                 >
                   ❤️
                 </div>
@@ -865,9 +943,11 @@ export function FinalSurprise() {
                     mt-6
                     text-center
                     font-display text-xs
-                    uppercase tracking-[0.16em]
+                    uppercase
+                    tracking-[0.16em]
                     text-rose-grad
-                    sm:mt-7 sm:text-sm
+                    sm:mt-7
+                    sm:text-sm
                     sm:tracking-[0.2em]
                     md:text-base
                   "
@@ -875,7 +955,6 @@ export function FinalSurprise() {
                   I Knew It 😌
                 </p>
 
-                {/* MAIN TITLE */}
                 <h2
                   className="
                     mx-auto mt-4
@@ -883,7 +962,8 @@ export function FinalSurprise() {
                     break-words
                     px-1
                     text-center
-                    font-script text-[2.7rem]
+                    font-script
+                    text-[2.7rem]
                     leading-[1.1]
                     text-rose-grad
                     sm:text-5xl
@@ -895,7 +975,6 @@ export function FinalSurprise() {
                   Every Single Time. ❤️
                 </h2>
 
-                {/* MESSAGE CARD */}
                 <div
                   className="
                     glass
@@ -917,7 +996,8 @@ export function FinalSurprise() {
                     className="
                       break-words
                       text-center
-                      font-display text-base
+                      font-display
+                      text-base
                       leading-8
                       text-foreground/90
                       sm:text-lg
@@ -930,19 +1010,28 @@ export function FinalSurprise() {
                     माझी निवड बदलणार नाही.
                     <br />
                     <br />
+
                     <span className="font-semibold text-rose-grad">
                       माझी निवड नेहमी तूच असशील. ❤️
                     </span>
                   </p>
                 </div>
 
-                {/* FINAL PROMISE */}
-                <div className="mt-12 w-full text-center sm:mt-16">
+                <div
+                  className="
+                    mt-12
+                    w-full
+                    text-center
+                    sm:mt-16
+                  "
+                >
                   <p
                     className="
                       text-center
-                      font-display text-xs
-                      uppercase tracking-[0.16em]
+                      font-display
+                      text-xs
+                      uppercase
+                      tracking-[0.16em]
                       text-muted-foreground
                       sm:text-sm
                       sm:tracking-[0.2em]
@@ -958,7 +1047,8 @@ export function FinalSurprise() {
                       break-words
                       px-2
                       text-center
-                      font-script text-[2.15rem]
+                      font-script
+                      text-[2.15rem]
                       leading-[1.5]
                       text-rose-grad
                       sm:text-4xl
@@ -974,14 +1064,16 @@ export function FinalSurprise() {
                   </p>
                 </div>
 
-                {/* PROMISE MADE */}
                 <p
                   className="
-                    mt-12 px-2
+                    mt-12
+                    px-2
                     text-center
-                    font-script text-[2.45rem]
+                    font-script
+                    text-[2.45rem]
                     leading-tight
-                    sm:mt-16 sm:text-5xl
+                    sm:mt-16
+                    sm:text-5xl
                     md:text-6xl
                   "
                   style={{
@@ -990,7 +1082,8 @@ export function FinalSurprise() {
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     color: "transparent",
-                    animation: "shimmer 4s linear infinite",
+                    animation:
+                      "shimmer 4s linear infinite",
                   }}
                 >
                   Promise Made.
@@ -998,9 +1091,6 @@ export function FinalSurprise() {
                   Forever Kept. ♾️
                 </p>
 
-                {/* =================================================
-                    FINAL EMOTIONAL ENDING
-                ================================================= */}
                 <div
                   className="
                     relative mt-24
@@ -1008,7 +1098,8 @@ export function FinalSurprise() {
                     border-t border-white/10
                     pt-18
                     text-center
-                    sm:mt-32 sm:pt-24
+                    sm:mt-32
+                    sm:pt-24
                   "
                 >
                   <HeartBurst active />
@@ -1017,8 +1108,10 @@ export function FinalSurprise() {
                     className="
                       relative
                       text-center
-                      font-display text-xs
-                      uppercase tracking-[0.16em]
+                      font-display
+                      text-xs
+                      uppercase
+                      tracking-[0.16em]
                       text-rose-grad
                       sm:text-sm
                       sm:tracking-[0.2em]
@@ -1030,11 +1123,14 @@ export function FinalSurprise() {
 
                   <h3
                     className="
-                      relative mx-auto mt-4
+                      relative
+                      mx-auto mt-4
                       w-full
-                      break-words px-1
+                      break-words
+                      px-1
                       text-center
-                      font-script text-[2.7rem]
+                      font-script
+                      text-[2.7rem]
                       leading-[1.1]
                       text-rose-grad
                       sm:text-5xl
@@ -1046,12 +1142,14 @@ export function FinalSurprise() {
                     My Beautiful Wife ❤️
                   </h3>
 
-                  {/* LIFE HEART */}
                   <div
                     className="
-                      relative mx-auto mt-10
-                      grid aspect-square
-                      w-[78vw] max-w-[310px]
+                      relative
+                      mx-auto mt-10
+                      grid
+                      aspect-square
+                      w-[78vw]
+                      max-w-[310px]
                       place-items-center
                       sm:mt-12
                       sm:w-[62vw]
@@ -1062,21 +1160,26 @@ export function FinalSurprise() {
                     <div
                       className="
                         animate-heartbeat
-                        absolute inset-0
+                        absolute
+                        inset-0
                       "
                       style={{
                         ...heartMaskStyle,
-                        background: "var(--gradient-rose)",
-                        boxShadow: "var(--shadow-glow)",
+                        background:
+                          "var(--gradient-rose)",
+                        boxShadow:
+                          "var(--shadow-glow)",
                       }}
                     />
 
                     <div
                       className="
                         pointer-events-none
-                        absolute inset-[8%]
+                        absolute
+                        inset-[8%]
                         rounded-full
-                        opacity-40 blur-2xl
+                        opacity-40
+                        blur-2xl
                       "
                       style={{
                         background: "var(--rose)",
@@ -1085,12 +1188,14 @@ export function FinalSurprise() {
 
                     <p
                       className="
-                        relative z-10
+                        relative
+                        z-10
                         max-w-[68%]
                         -translate-y-[8%]
                         break-words
                         text-center
-                        font-display text-base
+                        font-display
+                        text-base
                         font-semibold
                         leading-7
                         text-primary-foreground
@@ -1105,12 +1210,13 @@ export function FinalSurprise() {
                     </p>
                   </div>
 
-                  {/* MEMORY HEART */}
                   <div
                     className="
-                      relative mx-auto mt-10
+                      relative
+                      mx-auto mt-10
                       aspect-square
-                      w-[78vw] max-w-[310px]
+                      w-[78vw]
+                      max-w-[310px]
                       sm:mt-14
                       sm:w-[62vw]
                       sm:max-w-[380px]
@@ -1120,18 +1226,22 @@ export function FinalSurprise() {
                     <div
                       className="
                         animate-glow-pulse
-                        absolute inset-0
+                        absolute
+                        inset-0
                       "
                       style={{
                         ...heartMaskStyle,
-                        background: "var(--gradient-rose)",
-                        boxShadow: "var(--shadow-glow)",
+                        background:
+                          "var(--gradient-rose)",
+                        boxShadow:
+                          "var(--shadow-glow)",
                       }}
                     />
 
                     <div
                       className="
-                        absolute inset-[2.5%]
+                        absolute
+                        inset-[2.5%]
                       "
                       style={heartMaskStyle}
                     >
@@ -1142,8 +1252,11 @@ export function FinalSurprise() {
                         decoding="async"
                         draggable={false}
                         className="
-                          block h-full w-full
-                          select-none object-cover
+                          block
+                          h-full
+                          w-full
+                          select-none
+                          object-cover
                         "
                         style={heartMaskStyle}
                       />
@@ -1152,48 +1265,58 @@ export function FinalSurprise() {
 
                   <p
                     className="
-                      relative mx-auto mt-5
+                      relative
+                      mx-auto mt-5
                       max-w-[92vw]
-                      break-words px-2
+                      break-words
+                      px-2
                       text-center
-                      font-display text-sm
+                      font-display
+                      text-sm
                       leading-6
                       text-muted-foreground
-                      sm:mt-5 sm:text-base
+                      sm:mt-5
+                      sm:text-base
                     "
                   >
                     One of my favourite memories with you ❤️
                   </p>
 
-                  {/* FOREVER */}
                   <p
                     className="
                       animate-rise-in
-                      relative mt-10 px-2
+                      relative mt-10
+                      px-2
                       text-center
-                      font-script text-[2.65rem]
+                      font-script
+                      text-[2.65rem]
                       leading-tight
-                      sm:mt-12 sm:text-5xl
+                      sm:mt-12
+                      sm:text-5xl
                       md:text-6xl
                     "
                     style={{
                       background: "var(--gradient-rose)",
                       backgroundSize: "200% auto",
                       backgroundClip: "text",
-                      WebkitBackgroundClip: "text",
+                      WebkitBackgroundClip:
+                        "text",
                       color: "transparent",
-                      animation: "shimmer 4s linear infinite",
+                      animation:
+                        "shimmer 4s linear infinite",
                     }}
                   >
                     Forever &amp; Always ❤️
                   </p>
 
-                  {/* ALWAYS CHOOSE */}
                   <div
                     className="
-                      relative mx-auto mt-5
-                      w-full max-w-[92vw]
-                      px-1 text-center
+                      relative
+                      mx-auto mt-5
+                      w-full
+                      max-w-[92vw]
+                      px-1
+                      text-center
                       sm:mt-7
                     "
                   >
@@ -1201,7 +1324,8 @@ export function FinalSurprise() {
                       className="
                         break-words
                         text-center
-                        font-display text-base
+                        font-display
+                        text-base
                         leading-8
                         text-muted-foreground
                         sm:text-xl
@@ -1215,18 +1339,21 @@ export function FinalSurprise() {
                     </p>
                   </div>
 
-                  {/* BIRTHDAY AGAIN */}
                   <p
                     className="
                       animate-rise-in
-                      relative mx-auto mt-9
+                      relative
+                      mx-auto mt-9
                       w-full
-                      break-words px-2
+                      break-words
+                      px-2
                       text-center
-                      font-script text-[2.35rem]
+                      font-script
+                      text-[2.35rem]
                       leading-[1.2]
                       text-rose-grad
-                      sm:mt-10 sm:text-4xl
+                      sm:mt-10
+                      sm:text-4xl
                       md:text-5xl
                     "
                   >
@@ -1235,16 +1362,18 @@ export function FinalSurprise() {
                     Happy Birthday My Love ❤️
                   </p>
 
-                  {/* SIGNATURE */}
                   <p
                     className="
                       relative mt-6
-                      break-words px-2
+                      break-words
+                      px-2
                       text-center
-                      font-display text-sm
+                      font-display
+                      text-sm
                       leading-7
                       text-muted-foreground
-                      sm:mt-6 sm:text-base
+                      sm:mt-6
+                      sm:text-base
                     "
                   >
                     With all my love, forever yours. ❤️
@@ -1252,9 +1381,11 @@ export function FinalSurprise() {
 
                   <div
                     className="
-                      relative mx-auto mt-8
+                      relative
+                      mx-auto mt-8
                       h-16 w-full
-                      sm:mt-8 sm:h-24
+                      sm:mt-8
+                      sm:h-24
                     "
                   >
                     <HeartBurst active />

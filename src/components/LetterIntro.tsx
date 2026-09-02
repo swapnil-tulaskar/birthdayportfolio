@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface LetterIntroProps {
   onOpen: () => void;
@@ -9,33 +8,40 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
   const [opening, setOpening] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
 
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const handleOpen = () => {
     if (opening) return;
 
     setOpening(true);
 
-    // Envelope opening animation
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setShowLetter(true);
     }, 6000);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <main className="letter-screen">
       <div className="letter-scene">
 
-        {/* =========================================
-            ENVELOPE SCREEN
-        ========================================= */}
+        {/* ================================
+            ENVELOPE INTRO
+        ================================= */}
 
         {!showLetter && (
           <>
-            {/* Small intro text */}
             <p className="letter-subtitle">
               A little something for you...
             </p>
 
-            {/* Envelope */}
             <div
               className={`envelope ${opening ? "is-opening" : ""}`}
               onClick={handleOpen}
@@ -55,14 +61,10 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
               {/* Envelope back */}
               <div className="envelope-back" />
 
-              {/* =====================================
-                  LETTER PAPER INSIDE ENVELOPE
-              ===================================== */}
-
+              {/* Paper inside envelope */}
               <div className="paper">
                 <div className="paper-inner">
 
-                  {/* Heart */}
                   <div
                     className="paper-heart"
                     aria-hidden="true"
@@ -70,12 +72,10 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
                     ❤️
                   </div>
 
-                  {/* Heading */}
                   <h2>
                     My Dearest Love
                   </h2>
 
-                  {/* Message */}
                   <p>
                     There is something
                     <br />
@@ -100,10 +100,7 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
               </div>
             </div>
 
-            {/* =====================================
-                OPEN BUTTON
-            ===================================== */}
-
+            {/* Open button */}
             <button
               type="button"
               className="letter-open-btn"
@@ -123,16 +120,14 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
           </>
         )}
 
-        {/* =========================================
-            FULL LETTER
-        ========================================= */}
+        {/* ================================
+            FULL LOVE LETTER
+        ================================= */}
 
         {showLetter && (
           <div className="real-letter">
-
             <div className="letter-content">
 
-              {/* Heart */}
               <div
                 className="letter-top-heart"
                 aria-hidden="true"
@@ -140,13 +135,11 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
                 ❤️
               </div>
 
-              {/* Greeting */}
               <p className="dear">
                 My Dearest Love,
               </p>
 
-              {/* Letter */}
-               <p>
+              <p>
                 हे सगळं कुणाला दाखवण्यासाठी नाही,
                 हे फक्त तुला माझं मन कळावं म्हणून आहे.
               </p>
@@ -156,9 +149,8 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
                 पण तुझ्यासाठी हा एक छोटासा प्रयत्न आहे.
               </p>
 
-              {/* Letter */}
               <p>
-                आज तुझ्यासाठी फक्त हे एक छोटीशी
+                आज तुझ्यासाठी फक्त ही एक छोटीशी
                 वाढदिवसाची भेट नाही...
               </p>
 
@@ -203,26 +195,24 @@ export function LetterIntro({ onOpen }: LetterIntroProps) {
                 तूच ती जी ही कहाणी पूर्ण करते.
               </p>
 
-              {/* Ending */}
               <p className="letter-ending">
                 With all my love ❤️
               </p>
 
               <p className="signature">
                 Your Loving Husband
-                
               </p>
+
               <p className="signature">
                 Swapnil
               </p>
 
-              {/* Continue */}
               <button
                 type="button"
                 className="continue-btn"
                 onClick={onOpen}
               >
-                click here for Surprise ❤️
+                Click Here for Surprise ❤️
               </button>
 
             </div>
