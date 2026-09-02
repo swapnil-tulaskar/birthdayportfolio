@@ -18,17 +18,17 @@ export const heartMaskStyle: React.CSSProperties = {
 function Fireworks() {
   const shells = useMemo(
     () =>
-      Array.from({ length: 10 }, (_, s) => ({
-        x: 10 + Math.random() * 80,
-        y: 10 + Math.random() * 50,
-        delay: Math.random() * 3,
-        parts: Array.from({ length: 26 }, (_, i) => {
-          const a = (i / 26) * Math.PI * 2;
-          const d = 70 + Math.random() * 90;
+      Array.from({ length: 12 }, (_, s) => ({
+        x: 8 + Math.random() * 84,
+        y: 8 + Math.random() * 48,
+        delay: Math.random() * 2.8,
+        parts: Array.from({ length: 28 }, (_, i) => {
+          const angle = (i / 28) * Math.PI * 2;
+          const distance = 65 + Math.random() * 100;
 
           return {
-            tx: Math.cos(a) * d,
-            ty: Math.sin(a) * d,
+            tx: Math.cos(angle) * distance,
+            ty: Math.sin(angle) * distance,
             id: `${s}-${i}`,
           };
         }),
@@ -39,41 +39,31 @@ function Fireworks() {
   return (
     <div
       aria-hidden
-      className="
-        pointer-events-none
-        absolute
-        inset-0
-        overflow-hidden
-      "
+      className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      {shells.map((sh, i) => (
+      {shells.map((shell, shellIndex) => (
         <div
-          key={i}
+          key={shellIndex}
           className="absolute"
           style={{
-            left: `${sh.x}%`,
-            top: `${sh.y}%`,
+            left: `${shell.x}%`,
+            top: `${shell.y}%`,
           }}
         >
-          {sh.parts.map((p) => (
+          {shell.parts.map((part) => (
             <span
-              key={p.id}
-              className="
-                absolute
-                h-1.5
-                w-1.5
-                rounded-full
-              "
+              key={part.id}
+              className="absolute h-1.5 w-1.5 rounded-full"
               style={
                 {
                   background:
-                    i % 2
-                      ? "var(--gold)"
+                    shellIndex % 2
+                      ? "var(--rose)"
                       : "var(--rose)",
                   boxShadow: "0 0 10px currentColor",
-                  "--tx": `${p.tx}px`,
-                  "--ty": `${p.ty}px`,
-                  animation: `burst 1.6s ease-out ${sh.delay}s infinite`,
+                  "--tx": `${part.tx}px`,
+                  "--ty": `${part.ty}px`,
+                  animation: `burst 1.6s ease-out ${shell.delay}s infinite`,
                 } as React.CSSProperties
               }
             />
@@ -84,257 +74,1185 @@ function Fireworks() {
   );
 }
 
+const PROMISES = [
+  {
+    icon: "❤️",
+    title: "Promise #1",
+    text: "तुझं हसू जपण्यासाठी माझ्याकडून शक्य ते सगळं करण्याचं.",
+  },
+  {
+    icon: "🫶",
+    title: "Promise #2",
+    text: "आयुष्य कितीही कठीण झालं तरी तुझ्या सोबत उभं राहण्याचं.",
+  },
+  {
+    icon: "🌸",
+    title: "Promise #3",
+    text: "आपल्या छोट्या छोट्या क्षणांनाही खास बनवत राहण्याचं.",
+  },
+  {
+    icon: "📸",
+    title: "Promise #4",
+    text: "तुझ्यासोबत अजून खूप सुंदर आठवणी बनवण्याचं.",
+  },
+  {
+    icon: "💍",
+    title: "Promise #5",
+    text: "परिस्थिती कोणतीही असो... प्रत्येक वेळी तुलाच निवडण्याचं.",
+  },
+];
+
+const NO_MESSAGES = [
+  "Are you sure? 🥺❤️",
+  "Really? 😭❤️",
+  "Madhu... seriously? 😂",
+  "Okay... I'll ask one more time. ❤️",
+  "I know your answer is YES. 😌❤️",
+];
+
 export function FinalSurprise() {
   const [opened, setOpened] = useState(false);
+  const [promiseIndex, setPromiseIndex] = useState(-1);
+  const [daysOpen, setDaysOpen] = useState(false);
+  const [questionOpen, setQuestionOpen] = useState(false);
+  const [noCount, setNoCount] = useState(0);
+  const [chosen, setChosen] = useState(false);
+
   const best = photos[16]!;
+
+  const openSurprise = () => {
+    playChime(660);
+    setOpened(true);
+  };
+
+  const nextPromise = () => {
+    playChime(720);
+
+    if (promiseIndex < PROMISES.length - 1) {
+      setPromiseIndex((current) => current + 1);
+      return;
+    }
+
+    setDaysOpen(true);
+  };
+
+  const chooseYes = () => {
+    playChime(880);
+    setChosen(true);
+  };
+
+  const chooseNo = () => {
+    playChime(420);
+
+    setNoCount((current) =>
+      Math.min(current + 1, NO_MESSAGES.length),
+    );
+  };
+
+  const noScale = Math.max(0, 1 - noCount * 0.2);
 
   return (
     <section
       id="surprise"
       className="
-        relative
-        z-10
-        mx-auto
-        w-full
-        max-w-4xl
+        relative z-10 mx-auto
+        flex w-full max-w-4xl
+        flex-col items-center
         overflow-hidden
-        px-3
-        py-14
+        px-3 py-10
         text-center
-        sm:px-5
-        sm:py-20
+        sm:px-5 sm:py-20
         md:py-24
         lg:py-28
       "
     >
-      {!opened ? (
-        <>
+      {/* =========================================================
+          OPENING
+      ========================================================= */}
+      {!opened && (
+        <div className="flex w-full min-w-0 flex-col items-center">
+          <p
+            className="
+              mb-2 px-2
+              font-display text-[9px] uppercase
+              tracking-[0.18em]
+              text-muted-foreground
+              sm:text-xs sm:tracking-[0.2em]
+              md:text-sm
+            "
+          >
+            Just One More Thing...
+          </p>
+
           <h2
             className="
-              font-script
-              text-4xl
-              leading-tight
+              w-full max-w-[95vw]
+              break-words
+              font-script text-[2.15rem]
+              leading-[1.1]
               text-rose-grad
               sm:text-5xl
               md:text-6xl
             "
           >
-            One Last Surprise
+            One Last Surprise ❤️
           </h2>
+
+          <p
+            className="
+              mx-auto mt-3 w-full max-w-[92vw]
+              break-words
+              font-display text-xs leading-6
+              text-muted-foreground
+              sm:text-base sm:leading-relaxed
+              md:text-lg
+            "
+          >
+            Something special is waiting for you...
+          </p>
 
           <button
             type="button"
-            onClick={() => {
-              playChime(660);
-              setOpened(true);
-            }}
+            onClick={openSurprise}
             className="
-              glass
-              animate-glow-pulse
-              mx-auto
-              mt-8
-              flex
-              w-full
-              max-w-[320px]
-              flex-col
-              items-center
-              gap-3
+              glass animate-glow-pulse group relative
+              mx-auto mt-7
+              flex w-full max-w-[calc(100vw-24px)]
+              flex-col items-center
+              overflow-hidden
               rounded-[1.5rem]
-              px-5
-              py-6
-              transition
-              duration-500
-              active:scale-[0.98]
-              sm:mt-10
-              sm:max-w-[380px]
+              px-5 py-6
+              transition duration-500
+              active:scale-[0.97]
+              sm:mt-10 sm:max-w-[390px]
               sm:rounded-[2rem]
-              sm:px-10
-              sm:py-8
+              sm:px-8 sm:py-9
               sm:hover:-translate-y-2
             "
+            style={{
+              boxShadow: "var(--shadow-glow)",
+            }}
           >
             <span
+              aria-hidden
               className="
-                animate-drift
+                pointer-events-none absolute inset-0
+                rounded-[1.5rem]
+                opacity-0
+                transition duration-500
+                group-hover:opacity-100
+              "
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(255,80,120,0.22), transparent 65%)",
+              }}
+            />
+
+            <span
+              aria-hidden
+              className="
+                relative animate-drift
                 text-6xl
                 sm:text-8xl
               "
-              aria-hidden="true"
             >
               🎁
             </span>
 
             <span
               className="
-                font-display
-                text-base
-                font-semibold
-                leading-relaxed
-                text-gold
+                relative mt-3
+                break-words
+                font-display text-base
+                font-semibold leading-tight
+                text-rose-grad
                 sm:text-xl
                 md:text-2xl
               "
             >
-              🎁 Open Final Surprise
+              Open My Heart ❤️
+            </span>
+
+            <span
+              className="
+                relative mt-2
+                text-[10px] leading-5
+                text-muted-foreground
+                sm:text-sm
+              "
+            >
+              Tap to reveal your surprise
             </span>
           </button>
-        </>
-      ) : (
-        <div className="relative animate-rise-in">
+        </div>
+      )}
+
+      {/* =========================================================
+          SURPRISE CONTENT
+      ========================================================= */}
+      {opened && (
+        <div
+          className="
+            relative w-full min-w-0
+            text-center
+          "
+        >
           <Fireworks />
 
-          <HeartBurst active />
-
-          <h2
-            className="
-              relative
-              px-2
-              font-script
-              text-4xl
-              leading-tight
-              text-rose-grad
-              sm:text-5xl
-              md:text-6xl
-            "
-          >
-            ❤️ Happy Birthday My Beautiful Wife ❤️
-          </h2>
-
-          {/* Love Heart */}
-          <div
-            className="
-              relative
-              mx-auto
-              mt-9
-              grid
-              aspect-square
-              w-[72vw]
-              max-w-[290px]
-              place-items-center
-              sm:mt-12
-              sm:w-[65vw]
-              sm:max-w-[380px]
-              md:max-w-[420px]
-            "
-          >
-            <div
-              className="
-                animate-heartbeat
-                absolute
-                inset-0
-              "
-              style={{
-                ...heartMaskStyle,
-                background: "var(--gradient-rose)",
-                boxShadow: "var(--shadow-glow)",
-              }}
-            />
-
-            <p
-              className="
-                relative
-                z-10
-                max-w-[62%]
-                -translate-y-[8%]
-                font-display
-                text-base
-                font-semibold
-                leading-relaxed
-                text-primary-foreground
-                sm:text-xl
-                md:text-2xl
-              "
-            >
-              "I Love You More Than Words Can Ever Say."
-            </p>
-          </div>
-
-          {/* Best Memory */}
-          <div
-            className="
-              mx-auto
-              mt-9
-              aspect-square
-              w-[72vw]
-              max-w-[290px]
-              sm:mt-12
-              sm:w-[65vw]
-              sm:max-w-[380px]
-              md:max-w-[420px]
-            "
-          >
-            <div
-              className="
-                animate-glow-pulse
-                h-full
-                w-full
-              "
-              style={{
-                ...heartMaskStyle,
-                background: "var(--gradient-gold)",
-                padding: 8,
-              }}
-            >
-              <img
-                src={best.src}
-                alt="Our best memory together"
-                loading="lazy"
-                decoding="async"
-                draggable={false}
+          {/* =====================================================
+              PROMISES
+          ===================================================== */}
+          {!daysOpen && (
+            <div className="relative mx-auto w-full min-w-0">
+              <p
                 className="
-                  block
-                  h-full
-                  w-full
-                  select-none
-                  object-cover
+                  font-display text-[9px] uppercase
+                  tracking-[0.18em] text-rose-grad
+                  sm:text-xs sm:tracking-[0.2em]
+                  md:text-sm
                 "
-                style={heartMaskStyle}
-              />
+              >
+                Just Between Us ❤️
+              </p>
+
+              <h2
+                className="
+                  mx-auto mt-3 w-full
+                  break-words px-1
+                  font-script text-[2.15rem]
+                  leading-[1.1]
+                  text-rose-grad
+                  sm:text-5xl
+                  md:text-6xl
+                "
+              >
+                A Few Little Promises
+              </h2>
+
+              <p
+                className="
+                  mx-auto mt-3 w-full max-w-[92vw]
+                  break-words
+                  font-display text-xs leading-6
+                  text-muted-foreground
+                  sm:text-base sm:leading-relaxed
+                "
+              >
+                Some promises I want to keep...
+                <br />
+                not just today, but always.
+              </p>
+
+              {promiseIndex === -1 && (
+                <button
+                  type="button"
+                  onClick={nextPromise}
+                  className="
+                    glass animate-glow-pulse
+                    mx-auto mt-7
+                    flex w-full
+                    max-w-[calc(100vw-24px)]
+                    flex-col items-center
+                    rounded-[1.5rem]
+                    px-5 py-6
+                    transition duration-500
+                    active:scale-[0.97]
+                    sm:mt-8 sm:max-w-[390px]
+                    sm:rounded-[2rem]
+                    sm:px-8 sm:py-9
+                    sm:hover:-translate-y-2
+                  "
+                  style={{
+                    boxShadow: "var(--shadow-glow)",
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    className="
+                      animate-heartbeat
+                      text-5xl sm:text-6xl
+                    "
+                  >
+                    💌
+                  </span>
+
+                  <span
+                    className="
+                      mt-3 break-words
+                      font-display text-base
+                      font-semibold leading-tight
+                      text-rose-grad
+                      sm:text-xl md:text-2xl
+                    "
+                  >
+                    Open My First Promise
+                  </span>
+
+                  <span
+                    className="
+                      mt-2 text-[10px]
+                      leading-5 text-muted-foreground
+                      sm:text-sm
+                    "
+                  >
+                    I made these just for you ❤️
+                  </span>
+                </button>
+              )}
+
+              {promiseIndex >= 0 && (
+                <div
+                  className="
+                    mx-auto mt-6 w-full min-w-0
+                    sm:mt-9
+                  "
+                >
+                  <div
+                    key={promiseIndex}
+                    className="
+                      glass animate-rise-in
+                      mx-auto w-full max-w-[520px]
+                      min-w-0
+                      rounded-[1.35rem]
+                      p-5
+                      sm:rounded-[2rem]
+                      sm:p-8 md:p-10
+                    "
+                    style={{
+                      boxShadow: "var(--shadow-glow)",
+                    }}
+                  >
+                    <div
+                      aria-hidden
+                      className="text-5xl sm:text-6xl"
+                    >
+                      {PROMISES[promiseIndex]!.icon}
+                    </div>
+
+                    <h3
+                      className="
+                        mt-4 break-words
+                        font-display text-lg
+                        font-semibold leading-tight
+                        text-rose-grad
+                        sm:text-2xl md:text-3xl
+                      "
+                    >
+                      {PROMISES[promiseIndex]!.title}
+                    </h3>
+
+                    <p
+                      className="
+                        mt-4 break-words
+                        font-display text-sm
+                        leading-7 text-foreground/90
+                        sm:text-lg sm:leading-relaxed
+                        md:text-xl
+                      "
+                    >
+                      {PROMISES[promiseIndex]!.text}
+                    </p>
+
+                    <div className="mx-auto mt-5 h-px w-full bg-white/10" />
+
+                    <p
+                      className="
+                        mt-4
+                        text-[9px] uppercase
+                        tracking-[0.18em]
+                        text-muted-foreground
+                        sm:text-[10px]
+                      "
+                    >
+                      {promiseIndex + 1} / {PROMISES.length}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={nextPromise}
+                    className="
+                      mt-5 max-w-[calc(100vw-32px)]
+                      rounded-full
+                      px-5 py-3
+                      font-display text-xs
+                      font-semibold
+                      text-primary-foreground
+                      transition active:scale-95
+                      sm:px-9 sm:py-4 sm:text-base
+                    "
+                    style={{
+                      background: "var(--gradient-rose)",
+                      boxShadow: "var(--shadow-glow)",
+                    }}
+                  >
+                    {promiseIndex === PROMISES.length - 1
+                      ? "Continue ❤️"
+                      : "Next Promise →"}
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
-          {/* Forever */}
-          <p
-            className="
-              animate-rise-in
-              mt-9
-              px-2
-              font-script
-              text-4xl
-              leading-tight
-              sm:mt-12
-              sm:text-5xl
-              md:text-6xl
-            "
-            style={{
-              background: "var(--gradient-gold)",
-              backgroundSize: "200% auto",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-              animation: "shimmer 4s linear infinite",
-            }}
-          >
-            Forever &amp; Always ❤️
-          </p>
+          {/* =====================================================
+              FOR THE DAYS WHEN
+          ===================================================== */}
+          {daysOpen && !questionOpen && !chosen && (
+            <div
+              className="
+                relative mx-auto
+                w-full max-w-2xl
+                min-w-0
+                animate-rise-in
+              "
+            >
+              <p
+                className="
+                  font-display text-[9px]
+                  uppercase tracking-[0.18em]
+                  text-rose-grad
+                  sm:text-xs
+                  sm:tracking-[0.2em]
+                  md:text-sm
+                "
+              >
+                Keep This Close ❤️
+              </p>
 
-          <p
-            className="
-              animate-rise-in
-              mx-auto
-              mt-5
-              max-w-[92vw]
-              font-display
-              text-base
-              leading-relaxed
-              text-muted-foreground
-              sm:mt-6
-              sm:text-2xl
-              md:text-3xl
-            "
-          >
-            Once Again Happy Birthday My Beautiful Wife ❤️
-          </p>
+              <h2
+                className="
+                  mx-auto mt-3 w-full
+                  break-words px-1
+                  font-script text-[2.15rem]
+                  leading-[1.1]
+                  text-rose-grad
+                  sm:text-5xl
+                  md:text-6xl
+                "
+              >
+                For The Days When...
+              </h2>
+
+              <div
+                className="
+                  mx-auto mt-6 w-full
+                  space-y-3
+                  sm:mt-10 sm:space-y-5
+                "
+              >
+                {[
+                  {
+                    title: "When you feel tired... 🌙",
+                    text: "Come to me. ❤️",
+                  },
+                  {
+                    title: "When you feel lost... 🫶",
+                    text: "I'll find my way to you.",
+                  },
+                  {
+                    title: "When you feel happy... 🌸",
+                    text: "Let me celebrate with you.",
+                  },
+                  {
+                    title: "And on every ordinary day... ❤️",
+                    text: "Just be you. That's enough.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="
+                      glass w-full min-w-0
+                      rounded-[1.15rem]
+                      p-4 text-left
+                      sm:rounded-3xl sm:p-7
+                    "
+                    style={{
+                      boxShadow: "var(--shadow-soft)",
+                    }}
+                  >
+                    <p
+                      className="
+                        break-words
+                        font-display text-sm
+                        leading-7
+                        sm:text-base sm:leading-relaxed
+                        md:text-lg
+                      "
+                    >
+                      <span className="font-semibold text-rose-grad">
+                        {item.title}
+                      </span>
+                      <br />
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setQuestionOpen(true)}
+                className="
+                  mt-6
+                  max-w-[calc(100vw-32px)]
+                  rounded-full
+                  px-5 py-3
+                  font-display text-xs
+                  font-semibold
+                  text-primary-foreground
+                  transition active:scale-95
+                  sm:mt-10 sm:px-9
+                  sm:py-4 sm:text-base
+                "
+                style={{
+                  background: "var(--gradient-rose)",
+                  boxShadow: "var(--shadow-glow)",
+                }}
+              >
+                One Last Question ❤️
+              </button>
+            </div>
+          )}
+
+          {/* =====================================================
+              YES / NO
+          ===================================================== */}
+          {questionOpen && !chosen && (
+            <div
+              className="
+                relative mx-auto
+                flex w-full max-w-2xl
+                flex-col items-center
+                min-w-0
+                animate-rise-in
+                text-center
+              "
+            >
+              <div
+                aria-hidden
+                className="
+                  animate-heartbeat
+                  text-5xl sm:text-7xl
+                "
+              >
+                🥺❤️
+              </div>
+
+              <p
+                className="
+                  mt-5
+                  font-display text-[9px]
+                  uppercase tracking-[0.18em]
+                  text-rose-grad
+                  sm:text-xs
+                  sm:tracking-[0.2em]
+                  md:text-sm
+                "
+              >
+                Madhu...
+              </p>
+
+              <h2
+                className="
+                  mx-auto mt-3 w-full
+                  break-words px-1
+                  font-script text-[2.1rem]
+                  leading-[1.1]
+                  text-rose-grad
+                  sm:text-5xl
+                  md:text-6xl
+                "
+              >
+                Would You Choose Me Again? ❤️
+              </h2>
+
+              <p
+                className="
+                  mx-auto mt-4
+                  max-w-[90vw]
+                  text-xs leading-6
+                  text-muted-foreground
+                  sm:text-base
+                "
+              >
+                Be honest... 😌
+              </p>
+
+              {noCount > 0 && (
+                <p
+                  key={noCount}
+                  className="
+                    animate-rise-in
+                    mx-auto mt-5
+                    max-w-[92vw]
+                    break-words px-2
+                    font-display text-sm
+                    font-semibold leading-6
+                    text-rose-grad
+                    sm:mt-6 sm:text-base
+                  "
+                >
+                  {NO_MESSAGES[noCount - 1]}
+                </p>
+              )}
+
+              <div
+                className="
+                  mx-auto mt-7
+                  flex w-full max-w-[330px]
+                  items-center justify-center
+                  gap-2 px-1
+                  sm:mt-8 sm:max-w-none sm:gap-5
+                "
+              >
+                <button
+                  type="button"
+                  onClick={chooseYes}
+                  className="
+                    shrink-0 rounded-full
+                    px-5 py-3
+                    font-display text-sm
+                    font-semibold
+                    text-primary-foreground
+                    transition-all duration-300
+                    active:scale-90
+                    sm:px-10 sm:py-4
+                    sm:text-lg
+                  "
+                  style={{
+                    background: "var(--gradient-rose)",
+                    boxShadow: "var(--shadow-glow)",
+                  }}
+                >
+                  YES ❤️
+                </button>
+
+                {noCount < NO_MESSAGES.length && (
+                  <button
+                    type="button"
+                    onClick={chooseNo}
+                    aria-label="No"
+                    className="
+                      shrink-0 whitespace-nowrap
+                      rounded-full
+                      border border-white/15
+                      bg-white/5
+                      font-display
+                      font-semibold
+                      text-muted-foreground
+                      backdrop-blur-md
+                      transition-all duration-500
+                      active:scale-90
+                    "
+                    style={{
+                      paddingLeft: `${Math.max(
+                        4,
+                        20 - noCount * 3,
+                      )}px`,
+                      paddingRight: `${Math.max(
+                        4,
+                        20 - noCount * 3,
+                      )}px`,
+                      paddingTop: `${Math.max(
+                        2,
+                        10 - noCount * 1.5,
+                      )}px`,
+                      paddingBottom: `${Math.max(
+                        2,
+                        10 - noCount * 1.5,
+                      )}px`,
+                      fontSize: `${Math.max(
+                        0.55,
+                        0.875 - noCount * 0.07,
+                      )}rem`,
+                      opacity: Math.max(
+                        0.15,
+                        1 - noCount * 0.2,
+                      ),
+                      transform: `scale(${noScale})`,
+                      transformOrigin: "center",
+                    }}
+                  >
+                    NO 🙈
+                  </button>
+                )}
+              </div>
+
+              {noCount >= 2 &&
+                noCount < NO_MESSAGES.length && (
+                  <p
+                    key={`hint-${noCount}`}
+                    className="
+                      animate-rise-in mt-4 px-2
+                      text-[10px] italic
+                      leading-5
+                      text-muted-foreground
+                      sm:mt-5 sm:text-xs
+                    "
+                  >
+                    The NO button is getting shy... 🙈💕
+                  </p>
+                )}
+
+              {noCount >= NO_MESSAGES.length && (
+                <p
+                  className="
+                    animate-rise-in
+                    mx-auto mt-5
+                    max-w-[92vw]
+                    break-words px-2
+                    font-display text-xs
+                    font-semibold leading-6
+                    text-rose-grad
+                    sm:mt-6 sm:text-sm
+                  "
+                >
+                  Okay... NO has officially disappeared. 😂❤️
+                  <br />
+                  Now there&apos;s only one answer left. 😌
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* =====================================================
+              FINAL YES - CENTERED
+          ===================================================== */}
+          {chosen && (
+            <div
+              className="
+                relative mx-auto
+                flex w-full
+                flex-col items-center
+                min-w-0
+                animate-rise-in
+                text-center
+              "
+            >
+              <Fireworks />
+              <HeartBurst active />
+
+              <div
+                className="
+                  relative mx-auto
+                  flex w-full max-w-2xl
+                  flex-col items-center
+                  min-w-0
+                  text-center
+                "
+              >
+                {/* BIG HEART */}
+                <div
+                  aria-hidden
+                  className="
+                    animate-heartbeat
+                    text-6xl sm:text-8xl
+                  "
+                >
+                  ❤️
+                </div>
+
+                <p
+                  className="
+                    mt-5
+                    text-center
+                    font-display text-[9px]
+                    uppercase tracking-[0.18em]
+                    text-rose-grad
+                    sm:mt-6 sm:text-xs
+                    sm:tracking-[0.2em]
+                    md:text-sm
+                  "
+                >
+                  I Knew It 😌
+                </p>
+
+                {/* TITLE */}
+                <h2
+                  className="
+                    mx-auto mt-3
+                    w-full
+                    break-words
+                    px-1
+                    text-center
+                    font-script text-[2.25rem]
+                    leading-[1.08]
+                    text-rose-grad
+                    sm:text-5xl
+                    md:text-6xl
+                  "
+                >
+                  I Choose You.
+                  <br />
+                  Every Single Time. ❤️
+                </h2>
+
+                {/* CHOICE MESSAGE */}
+                <div
+                  className="
+                    glass
+                    mx-auto mt-7
+                    w-full max-w-[520px]
+                    min-w-0
+                    rounded-[1.35rem]
+                    p-5
+                    text-center
+                    sm:mt-10
+                    sm:rounded-[2rem]
+                    sm:p-9
+                  "
+                  style={{
+                    boxShadow: "var(--shadow-glow)",
+                  }}
+                >
+                  <p
+                    className="
+                      break-words
+                      text-center
+                      font-display text-sm
+                      leading-7
+                      text-foreground/90
+                      sm:text-lg
+                      sm:leading-relaxed
+                      md:text-xl
+                    "
+                  >
+                    आज, उद्या किंवा कितीही वर्षांनी...
+                    <br />
+                    माझी निवड बदलणार नाही.
+                    <br />
+                    <br />
+                    <span className="font-semibold text-rose-grad">
+                      माझी निवड नेहमी तूच असशील. ❤️
+                    </span>
+                  </p>
+                </div>
+
+                {/* FINAL PROMISE */}
+                <div className="mt-10 w-full text-center sm:mt-16">
+                  <p
+                    className="
+                      text-center
+                      font-display text-[9px]
+                      uppercase tracking-[0.18em]
+                      text-muted-foreground
+                      sm:text-xs
+                      sm:tracking-[0.2em]
+                    "
+                  >
+                    My Final Promise
+                  </p>
+
+                  <p
+                    className="
+                      mx-auto mt-4
+                      max-w-[95vw]
+                      break-words
+                      px-2
+                      text-center
+                      font-script text-[1.8rem]
+                      leading-[1.5]
+                      text-rose-grad
+                      sm:text-4xl
+                      sm:leading-relaxed
+                      md:text-5xl
+                    "
+                  >
+                    “तुझ्यासोबत अजून खूप आयुष्य जगायचं आहे...
+                    <br />
+                    आणि त्या प्रत्येक दिवसात
+                    <br />
+                    तुलाच माझ्या सोबत पाहायचं आहे.” ❤️
+                  </p>
+                </div>
+
+                {/* PROMISE MADE */}
+                <p
+                  className="
+                    mt-10 px-2
+                    text-center
+                    font-script text-[2.15rem]
+                    leading-tight
+                    sm:mt-16 sm:text-5xl
+                    md:text-6xl
+                  "
+                  style={{
+                    background: "var(--gradient-rose)",
+                    backgroundSize: "200% auto",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                    animation: "shimmer 4s linear infinite",
+                  }}
+                >
+                  Promise Made.
+                  <br />
+                  Forever Kept. ♾️
+                </p>
+
+                {/* =================================================
+                    FINAL EMOTIONAL ENDING
+                ================================================= */}
+                <div
+                  className="
+                    relative mt-20
+                    w-full
+                    border-t border-white/10
+                    pt-16
+                    text-center
+                    sm:mt-32 sm:pt-24
+                  "
+                >
+                  <HeartBurst active />
+
+                  <p
+                    className="
+                      relative
+                      text-center
+                      font-display text-[9px]
+                      uppercase tracking-[0.18em]
+                      text-rose-grad
+                      sm:text-xs
+                      sm:tracking-[0.2em]
+                      md:text-sm
+                    "
+                  >
+                    For the woman I love ❤️
+                  </p>
+
+                  <h3
+                    className="
+                      relative mx-auto mt-3
+                      w-full
+                      break-words px-1
+                      text-center
+                      font-script text-[2.25rem]
+                      leading-[1.1]
+                      text-rose-grad
+                      sm:text-5xl
+                      md:text-6xl
+                    "
+                  >
+                    Happy Birthday
+                    <br />
+                    My Beautiful Wife ❤️
+                  </h3>
+
+                  {/* LIFE HEART */}
+                  <div
+                    className="
+                      relative mx-auto mt-9
+                      grid aspect-square
+                      w-[72vw] max-w-[280px]
+                      place-items-center
+                      sm:mt-12
+                      sm:w-[62vw]
+                      sm:max-w-[380px]
+                      md:max-w-[420px]
+                    "
+                  >
+                    <div
+                      className="animate-heartbeat absolute inset-0"
+                      style={{
+                        ...heartMaskStyle,
+                        background: "var(--gradient-rose)",
+                        boxShadow: "var(--shadow-glow)",
+                      }}
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute inset-[8%]
+                        rounded-full
+                        opacity-40 blur-2xl
+                      "
+                      style={{
+                        background: "var(--rose)",
+                      }}
+                    />
+
+                    <p
+                      className="
+                        relative z-10
+                        max-w-[65%]
+                        -translate-y-[8%]
+                        break-words
+                        text-center
+                        font-display text-[13px]
+                        font-semibold
+                        leading-6
+                        text-primary-foreground
+                        sm:text-xl
+                        sm:leading-relaxed
+                        md:text-2xl
+                      "
+                    >
+                      You are not just a part of my life...
+                      <br />
+                      You are my life. ❤️
+                    </p>
+                  </div>
+
+                  {/* MEMORY HEART */}
+                  <div
+                    className="
+                      relative mx-auto mt-9
+                      aspect-square
+                      w-[72vw] max-w-[280px]
+                      sm:mt-14
+                      sm:w-[62vw]
+                      sm:max-w-[380px]
+                      md:max-w-[420px]
+                    "
+                  >
+                    <div
+                      className="
+                        animate-glow-pulse
+                        absolute inset-0
+                      "
+                      style={{
+                        ...heartMaskStyle,
+                        background: "var(--gradient-rose)",
+                        boxShadow: "var(--shadow-glow)",
+                      }}
+                    />
+
+                    <div
+                      className="
+                        absolute inset-[2.5%]
+                      "
+                      style={heartMaskStyle}
+                    >
+                      <img
+                        src={best.src}
+                        alt="Our best memory together"
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                        className="
+                          block h-full w-full
+                          select-none object-cover
+                        "
+                        style={heartMaskStyle}
+                      />
+                    </div>
+                  </div>
+
+                  <p
+                    className="
+                      relative mx-auto mt-4
+                      max-w-[92vw]
+                      break-words px-2
+                      text-center
+                      font-display text-[11px]
+                      leading-5
+                      text-muted-foreground
+                      sm:mt-5 sm:text-sm
+                    "
+                  >
+                    One of my favourite memories with you ❤️
+                  </p>
+
+                  {/* FOREVER */}
+                  <p
+                    className="
+                      animate-rise-in
+                      relative mt-8 px-2
+                      text-center
+                      font-script text-[2.2rem]
+                      leading-tight
+                      sm:mt-12 sm:text-5xl
+                      md:text-6xl
+                    "
+                    style={{
+                      background: "var(--gradient-rose)",
+                      backgroundSize: "200% auto",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      color: "transparent",
+                      animation: "shimmer 4s linear infinite",
+                    }}
+                  >
+                    Forever &amp; Always ❤️
+                  </p>
+
+                  {/* ALWAYS CHOOSE */}
+                  <div
+                    className="
+                      relative mx-auto mt-4
+                      w-full max-w-[92vw]
+                      px-1 text-center
+                      sm:mt-7
+                    "
+                  >
+                    <p
+                      className="
+                        break-words
+                        text-center
+                        font-display text-sm
+                        leading-7
+                        text-muted-foreground
+                        sm:text-xl
+                        sm:leading-relaxed
+                        md:text-2xl
+                      "
+                    >
+                      No matter where life takes us,
+                      <br />
+                      I will always choose you. ❤️
+                    </p>
+                  </div>
+
+                  {/* BIRTHDAY AGAIN */}
+                  <p
+                    className="
+                      animate-rise-in
+                      relative mx-auto mt-7
+                      w-full
+                      break-words px-2
+                      text-center
+                      font-script text-[1.9rem]
+                      leading-[1.25]
+                      text-rose-grad
+                      sm:mt-10 sm:text-4xl
+                      md:text-5xl
+                    "
+                  >
+                    Once Again,
+                    <br />
+                    Happy Birthday My Love ❤️
+                  </p>
+
+                  {/* SIGNATURE */}
+                  <p
+                    className="
+                      relative mt-5
+                      break-words px-2
+                      text-center
+                      font-display text-xs
+                      leading-6
+                      text-muted-foreground
+                      sm:mt-6 sm:text-base
+                    "
+                  >
+                    With all my love, forever yours. ❤️
+                  </p>
+
+                  <div
+                    className="
+                      relative mx-auto mt-7
+                      h-14 w-full
+                      sm:mt-8 sm:h-24
+                    "
+                  >
+                    <HeartBurst active />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </section>
