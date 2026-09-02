@@ -20,18 +20,18 @@ const MESSAGE = `माझ्या प्रत्येक धडधडीत 
  * so photos remain visible on mobile and desktop.
  */
 const RING = [
-  { x: 50, y: 12 },
-  { x: 72, y: 17 },
-  { x: 87, y: 34 },
-  { x: 91, y: 55 },
-  { x: 84, y: 73 },
-  { x: 68, y: 87 },
-  { x: 50, y: 94 },
-  { x: 32, y: 87 },
-  { x: 16, y: 73 },
-  { x: 9, y: 55 },
-  { x: 13, y: 34 },
-  { x: 28, y: 17 },
+  { x: 50, y: 7 },
+  { x: 76, y: 13 },
+  { x: 93, y: 32 },
+  { x: 97, y: 55 },
+  { x: 91, y: 78 },
+  { x: 74, y: 92 },
+  { x: 50, y: 98 },
+  { x: 26, y: 92 },
+  { x: 9, y: 78 },
+  { x: 3, y: 55 },
+  { x: 7, y: 32 },
+  { x: 24, y: 13 },
 ];
 
 export function EntryScreen({
@@ -100,16 +100,16 @@ export function EntryScreen({
                 key={i}
                 className="
                   absolute
-                  h-[10%]
-                  w-[10%]
+                  h-[15%]
+                  w-[15%]
                   -translate-x-1/2
                   -translate-y-1/2
 
-                  sm:h-[10.5%]
-                  sm:w-[10.5%]
+                  sm:h-[15.5%]
+                  sm:w-[15.5%]
 
-                  md:h-[11%]
-                  md:w-[11%]
+                  md:h-[16%]
+                  md:w-[16%]
                 "
                 style={{
                   left: `${pos.x}%`,
@@ -158,16 +158,16 @@ export function EntryScreen({
             left-1/2
             top-1/2
             z-10
-            h-[50%]
-            w-[50%]
+            h-[56%]
+            w-[56%]
             -translate-x-1/2
             -translate-y-1/2
 
-            sm:h-[52%]
-            sm:w-[52%]
+            sm:h-[58%]
+            sm:w-[58%]
 
-            md:h-[54%]
-            md:w-[54%]
+            md:h-[60%]
+            md:w-[60%]
           "
         >
           <img
