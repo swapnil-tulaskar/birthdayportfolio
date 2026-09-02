@@ -39,10 +39,17 @@ function diff(from: Date, to: Date) {
   return { years, months, days, hours, minutes, seconds };
 }
 
-export function Countdown() {
+type CountdownProps = {
+  visible?: boolean;
+};
+
+export function Countdown({ visible = true }: CountdownProps) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    // Countdown visible नसताना timer सुरू करू नका
+    if (!visible) return;
+
     setNow(new Date());
 
     const t = setInterval(() => {
@@ -50,11 +57,18 @@ export function Countdown() {
     }, 1000);
 
     return () => clearInterval(t);
-  }, []);
+  }, [visible]);
+
+  // Love Letter पूर्ण type होईपर्यंत Countdown दिसणार नाही
+  if (!visible) return null;
 
   const from = new Date(DEFAULT_START);
 
-  const valid = !Number.isNaN(from.getTime()) && now && from <= now;
+  const valid =
+    !Number.isNaN(from.getTime()) &&
+    now !== null &&
+    from <= now;
+
   const d = valid ? diff(from, now) : null;
 
   const cells: [string, number][] = d
@@ -69,32 +83,84 @@ export function Countdown() {
     : [];
 
   return (
-    <section className="mx-auto max-w-4xl px-4 text-center">
-
-      <h2 className="font-display text-2xl text-gold sm:text-4xl">
+    <section
+      className="
+        animate-rise-in
+        mx-auto w-full max-w-4xl overflow-hidden
+        px-3 py-10 text-center
+        sm:px-5 sm:py-14
+        md:py-20
+      "
+    >
+      <h2
+        className="
+          font-display text-xl leading-tight text-gold
+          sm:text-3xl
+          md:text-4xl
+        "
+      >
         Time Together from
       </h2>
-      
-        <p className="mt-2 font-display text-6xl text-gold">
-          ❤️ 25 February 2022 ❤️
-        </p>
 
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p
+        className="
+          mt-2 break-words
+          font-display text-3xl font-semibold leading-tight text-gold
+          sm:text-5xl
+          md:text-6xl
+        "
+      >
+        ❤️ 25 February 2022 ❤️
+      </p>
+
+      <p
+        className="
+          mx-auto mt-3 max-w-[90vw]
+          text-xs leading-relaxed text-muted-foreground
+          sm:text-sm
+          md:text-base
+        "
+      >
         Every second with you has been a gift.
       </p>
 
-      <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3">
+      <div
+        className="
+          mx-auto mt-7 grid w-full max-w-3xl grid-cols-3 gap-2
+          sm:mt-9 sm:grid-cols-6 sm:gap-3
+        "
+      >
         {cells.map(([label, value]) => (
           <div
             key={label}
-            className="glass rounded-xl px-2 py-3 text-center transition duration-500 hover:-translate-y-1"
+            className="
+              glass min-w-0 rounded-xl px-1.5 py-3 text-center
+              transition duration-500
+              active:scale-[0.98]
+              sm:rounded-2xl sm:px-2 sm:py-4
+              sm:hover:-translate-y-1
+            "
             style={{ boxShadow: "var(--shadow-gold)" }}
           >
-            <div className="font-display text-2xl font-bold text-gold tabular-nums sm:text-3xl">
+            <div
+              className="
+                font-display text-xl font-bold text-gold tabular-nums
+                sm:text-2xl
+                md:text-3xl
+              "
+            >
               {String(value).padStart(2, "0")}
             </div>
 
-            <div className="mt-1 text-[0.55rem] uppercase tracking-[0.2em] text-muted-foreground">
+            <div
+              className="
+                mt-1 truncate
+                text-[0.48rem] uppercase tracking-[0.12em]
+                text-muted-foreground
+                sm:text-[0.55rem]
+                sm:tracking-[0.18em]
+              "
+            >
               {label}
             </div>
           </div>
@@ -104,17 +170,25 @@ export function Countdown() {
           Array.from({ length: 6 }, (_, i) => (
             <div
               key={i}
-              className="glass h-[80px] rounded-xl"
+              className="
+                glass h-[72px] rounded-xl
+                sm:h-[88px] sm:rounded-2xl
+              "
             />
           ))}
       </div>
 
-      <div className="mt-6 text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="mt-6 text-center sm:mt-8">
+        <p
+          className="
+            text-[0.6rem] uppercase tracking-[0.16em]
+            text-muted-foreground
+            sm:text-xs sm:tracking-[0.2em]
+          "
+        >
           Our journey started
         </p>
       </div>
-
     </section>
   );
 }

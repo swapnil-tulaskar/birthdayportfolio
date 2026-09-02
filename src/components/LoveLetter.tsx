@@ -16,7 +16,11 @@ const LETTER = `माझ्या आयुष्याच्या सर्�
 
 I Love You Forever ❤️`;
 
-export function LoveLetter() {
+type LoveLetterProps = {
+  onDone?: () => void;
+};
+
+export function LoveLetter({ onDone }: LoveLetterProps) {
   return (
     <section
       id="letter"
@@ -79,25 +83,26 @@ export function LoveLetter() {
         >
           💌
         </div>
+<Typewriter
+  whenVisible
+  speed={22}
+  text={LETTER}
+  {...(onDone ? { onDone } : {})}
+  className="
+    w-full
+    max-w-full
+    whitespace-pre-wrap
+    break-words
+    font-display
+    text-[15px]
+    leading-8
+    text-foreground/90
+    sm:text-lg
+    sm:leading-relaxed
+    md:text-xl
+  "
+/>
 
-        <Typewriter
-          whenVisible
-          speed={22}
-          text={LETTER}
-          className="
-            w-full
-            max-w-full
-            whitespace-pre-wrap
-            break-words
-            font-display
-            text-[15px]
-            leading-8
-            text-foreground/90
-            sm:text-lg
-            sm:leading-relaxed
-            md:text-xl
-          "
-        />
       </div>
     </section>
   );

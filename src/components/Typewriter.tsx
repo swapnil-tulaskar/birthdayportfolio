@@ -24,6 +24,7 @@ export function Typewriter({
 
   useEffect(() => {
     if (armed || !ref.current) return;
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -33,36 +34,64 @@ export function Typewriter({
       },
       { threshold: 0.25 },
     );
+
     io.observe(ref.current);
+
     return () => io.disconnect();
   }, [armed]);
 
   useEffect(() => {
     if (!armed) return;
+
     let i = 0;
-    let interval: ReturnType<typeof setInterval>;
+    let interval: ReturnType<typeof setInterval> | undefined;
+
     const timeout = setTimeout(() => {
       interval = setInterval(() => {
         i += 1;
         setShown(i);
+
         if (i >= text.length) {
-          clearInterval(interval);
+          if (interval) {
+            clearInterval(interval);
+          }
+
           onDone?.();
         }
       }, speed);
     }, startDelay);
+
     return () => {
       clearTimeout(timeout);
-      clearInterval(interval);
+
+      if (interval) {
+        clearInterval(interval);
+      }
     };
+
+    // onDone intentionally excluded
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [armed, text, speed, startDelay]);
 
   return (
-    <p ref={ref} className={className}>
+    <p
+      ref={ref}
+      className={className}
+    >
       {text.slice(0, shown)}
+
       {shown < text.length && (
-        <span className="ml-0.5 inline-block w-[2px] animate-pulse bg-accent align-middle text-transparent">
+        <span
+          className="
+            ml-0.5
+            inline-block
+            w-[2px]
+            animate-pulse
+            bg-accent
+            align-middle
+            text-transparent
+          "
+        >
           |
         </span>
       )}
