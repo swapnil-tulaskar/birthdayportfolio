@@ -8,8 +8,15 @@ import heart7 from "../assets/heart7.jpg";
 import heart8 from "../assets/heart8.jpg";
 import heart9 from "../assets/heart9.jpg";
 import heart10 from "../assets/heart10.jpg";
+import heart11 from "../assets/heart11.jpg";
+import heart12 from "../assets/heart12.jpg";
+import heart13 from "../assets/heart13.jpg";
+import heart14 from "../assets/heart14.jpg";
 
-export type Photo = { src: string; alt: string };
+export type Photo = {
+  src: string;
+  alt: string;
+};
 
 export const heartPhotos: Photo[] = [
   { src: heart1, alt: "Heart Memory 1" },
@@ -21,6 +28,9 @@ export const heartPhotos: Photo[] = [
   { src: heart7, alt: "Heart Memory 7" },
   { src: heart8, alt: "Heart Memory 8" },
   { src: heart9, alt: "Heart Memory 9" },
-  { src: heart10, alt: "Heart Memory 10" }
-  
+  { src: heart10, alt: "Heart Memory 10" },
+  { src: heart11, alt: "Heart Memory 11" },
+  { src: heart12, alt: "Heart Memory 12" },
+  { src: heart13, alt: "Heart Memory 13" },
+  { src: heart14, alt: "Heart Memory 14" },
 ];
