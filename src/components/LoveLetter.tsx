@@ -193,9 +193,11 @@ export function LoveLetter({ onDone }: LoveLetterProps) {
               className="
                 w-full max-w-full
                 whitespace-pre-wrap break-words
-                text-left
+                text-center
+                font-display text-sm leading-relaxed
+                text-foreground/90
                 font-display
-                text-[14px]
+                text-[18px]
                 leading-[1.9]
                 text-foreground/90
 

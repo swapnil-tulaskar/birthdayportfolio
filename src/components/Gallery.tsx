@@ -80,47 +80,88 @@ export function Gallery() {
         max-w-6xl
         overflow-hidden
         px-3
-        py-12
+        pt-12
+        pb-24
+
         sm:px-5
-        sm:py-20
-        md:py-24
-        lg:py-28
+        sm:pt-20
+        sm:pb-32
+
+        md:pt-24
+        md:pb-36
+
+        lg:pt-28
+        lg:pb-40
       "
     >
       {/* =====================================================
           HEADING
       ===================================================== */}
 
-      <h2
-        className="
-          text-center
-          font-script
-          text-4xl
-          leading-tight
-          text-rose-grad
-          sm:text-5xl
-          md:text-6xl
-        "
-      >
-        Love Gallery
-      </h2>
+      <div className="text-center">
+        <h2
+          className="
+            font-script
+            text-4xl
+            leading-tight
+            text-rose-grad
 
-      <p
-        className="
-          mx-auto
-          mt-3
-          max-w-[92vw]
-          text-center
-          font-display
-          text-sm
-          leading-relaxed
-          text-muted-foreground
-          sm:text-base
-          md:text-lg
-        "
-      >
-        Every picture, a heartbeat we get to keep.
-      </p>
+            sm:text-5xl
+            md:text-6xl
+            lg:text-7xl
+          "
+        >
+          Love Gallery ❤️
+        </h2>
+
+        {/* Decorative divider */}
+        <div
+          className="
+            mx-auto
+            mt-4
+            flex
+            items-center
+            justify-center
+            gap-3
+          "
+          aria-hidden="true"
+        >
+          <span className="h-px w-10 bg-gold/30 sm:w-16" />
+
+          <span className="text-sm text-gold sm:text-base">
+            ✦
+          </span>
+
+          <span className="text-xl sm:text-2xl">
+            ❤️
+          </span>
+
+          <span className="text-sm text-gold sm:text-base">
+            ✦
+          </span>
+
+          <span className="h-px w-10 bg-gold/30 sm:w-16" />
+        </div>
+
+        <p
+          className="
+            mx-auto
+            mt-4
+            max-w-[92vw]
+            font-display
+            text-sm
+            leading-relaxed
+            text-muted-foreground
+
+            sm:max-w-2xl
+            sm:text-base
+
+            md:text-lg
+          "
+        >
+          Every picture, a heartbeat we get to keep. ❤️
+        </p>
+      </div>
 
       {/* =====================================================
           GALLERY - 21 RANDOM PHOTOS
@@ -128,14 +169,17 @@ export function Gallery() {
 
       <div
         className="
-          mt-7
+          mt-8
           columns-1
           gap-3
+
           sm:mt-10
           sm:columns-2
           sm:gap-4
+
           lg:mt-12
           lg:columns-3
+
           [&>*]:mb-3
           sm:[&>*]:mb-4
         "
@@ -157,8 +201,9 @@ export function Gallery() {
               p-1.5
               text-left
               transition
-              duration-300
+              duration-500
               active:scale-[0.98]
+
               sm:mb-4
               sm:rounded-3xl
               sm:p-2
@@ -175,6 +220,7 @@ export function Gallery() {
                 w-full
                 overflow-hidden
                 rounded-xl
+
                 sm:rounded-2xl
               "
             >
@@ -191,11 +237,13 @@ export function Gallery() {
                   select-none
                   object-contain
                   transition
-                  duration-500
+                  duration-700
+
                   sm:group-hover:scale-105
                 "
               />
 
+              {/* Heart overlay */}
               <span
                 className="
                   pointer-events-none
@@ -204,6 +252,7 @@ export function Gallery() {
                   top-2
                   text-lg
                   opacity-80
+
                   sm:right-3
                   sm:top-3
                   sm:text-2xl
@@ -212,12 +261,104 @@ export function Gallery() {
                   sm:duration-500
                   sm:group-hover:opacity-100
                 "
+                aria-hidden="true"
               >
                 ❤️
               </span>
             </div>
           </button>
         ))}
+      </div>
+
+      {/* =====================================================
+          GALLERY → TIMELINE TRANSITION
+      ===================================================== */}
+
+      <div
+        className="
+          mx-auto
+          mt-14
+          flex
+          w-full
+          max-w-xl
+          flex-col
+          items-center
+          justify-center
+          text-center
+
+          sm:mt-20
+        "
+      >
+        {/* Decorative divider */}
+        <div
+          className="
+            flex
+            items-center
+            gap-3
+            text-gold
+          "
+          aria-hidden="true"
+        >
+          <span className="h-px w-12 bg-gold/30 sm:w-20" />
+
+          <span className="text-lg">
+            ✦
+          </span>
+
+          <span className="text-2xl">
+            ❤️
+          </span>
+
+          <span className="text-lg">
+            ✦
+          </span>
+
+          <span className="h-px w-12 bg-gold/30 sm:w-20" />
+        </div>
+
+        {/* Transition message */}
+        <p
+          className="
+            mt-4
+            font-script
+            text-2xl
+            text-rose-grad
+
+            sm:text-3xl
+            md:text-4xl
+          "
+        >
+          And the memories continue... ✨
+        </p>
+
+        <p
+          className="
+            mt-2
+            font-display
+            text-xs
+            leading-relaxed
+            text-muted-foreground
+
+            sm:text-sm
+          "
+        >
+          Keep scrolling to see our beautiful journey ❤️
+        </p>
+
+        {/* Scroll indicator */}
+        <div
+          className="
+            mt-5
+            animate-bounce
+            text-xl
+            opacity-70
+
+            sm:text-2xl
+          "
+          aria-hidden="true"
+        >
+          ↓
+        </div>
       </div>
 
       {/* =====================================================
@@ -238,6 +379,7 @@ export function Gallery() {
               justify-center
               bg-black/95
               p-2
+
               sm:p-4
             "
             onClick={() => setOpen(null)}
@@ -253,7 +395,9 @@ export function Gallery() {
               WebkitBackdropFilter: "blur(18px)",
             }}
           >
-            {/* SELECTED PHOTO */}
+            {/* =================================================
+                SELECTED PHOTO
+            ================================================= */}
 
             <img
               src={galleryPhotos[open]!.src}
@@ -267,9 +411,10 @@ export function Gallery() {
                 max-h-[92dvh]
                 max-w-[96vw]
                 select-none
-                object-contain
                 rounded-xl
+                object-contain
                 animate-rise-in
+
                 sm:max-h-[94dvh]
                 sm:max-w-[94vw]
                 sm:rounded-2xl
@@ -282,7 +427,9 @@ export function Gallery() {
               }}
             />
 
-            {/* CLOSE BUTTON */}
+            {/* =================================================
+                CLOSE BUTTON
+            ================================================= */}
 
             <button
               type="button"
@@ -305,6 +452,7 @@ export function Gallery() {
                 transition
                 hover:bg-black/80
                 active:scale-90
+
                 sm:right-5
                 sm:top-5
                 sm:h-12

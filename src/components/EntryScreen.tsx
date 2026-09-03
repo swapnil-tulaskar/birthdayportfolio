@@ -11,13 +11,11 @@ const MESSAGE = `माझ्या प्रत्येक धडधडीत 
 तू माझ्या आयुष्याची सर्वात सुंदर भेट आहेस...
 
 माझ्या प्रत्येक क्षणाला खास बनवल्याबद्दल धन्यवाद,
-वाढदिवसाच्या शुभेच्छा माझी राणी... ❤️ `;
+वाढदिवसाच्या शुभेच्छा माझी राणी... ❤️`;
 
 /**
  * Responsive heart-shaped photo ring.
- *
- * All positions stay inside the 1:1 container
- * so photos remain visible on mobile and desktop.
+ * Designed to work well on mobile, tablet and desktop.
  */
 const RING = [
   { x: 50, y: 7 },
@@ -41,6 +39,10 @@ export function EntryScreen({
 }) {
   const [hoverHearts, setHoverHearts] = useState(0);
 
+  const createHearts = () => {
+    setHoverHearts((n) => n + 1);
+  };
+
   return (
     <section
       className="
@@ -56,16 +58,19 @@ export function EntryScreen({
         justify-center
         overflow-hidden
         px-3
-        py-12
+        py-8
         text-center
+
         sm:px-5
-        sm:py-16
-        md:py-20
-        lg:py-24
+        sm:py-12
+
+        md:py-16
+
+        lg:py-20
       "
     >
       {/* =====================================================
-          RESPONSIVE HEART AREA
+          HEART PHOTO AREA
       ===================================================== */}
 
       <div
@@ -73,11 +78,11 @@ export function EntryScreen({
           relative
           mx-auto
           aspect-square
-          w-[76vw]
-          max-w-[290px]
+          w-[82vw]
+          max-w-[330px]
           shrink-0
 
-          sm:w-[68vw]
+          sm:w-[72vw]
           sm:max-w-[380px]
 
           md:w-[55vw]
@@ -88,7 +93,7 @@ export function EntryScreen({
         "
       >
         {/* ===================================================
-            ROTATING HEART PHOTO RING
+            ROTATING PHOTO RING
         =================================================== */}
 
         <div className="animate-spin-slow absolute inset-0">
@@ -100,13 +105,13 @@ export function EntryScreen({
                 key={i}
                 className="
                   absolute
-                  h-[15%]
-                  w-[15%]
+                  h-[14.5%]
+                  w-[14.5%]
                   -translate-x-1/2
                   -translate-y-1/2
 
-                  sm:h-[15.5%]
-                  sm:w-[15.5%]
+                  sm:h-[15%]
+                  sm:w-[15%]
 
                   md:h-[16%]
                   md:w-[16%]
@@ -115,7 +120,7 @@ export function EntryScreen({
                   left: `${pos.x}%`,
                   top: `${pos.y}%`,
                   animation: `drift ${
-                    5 + (i % 4)
+                    6 + (i % 4)
                   }s ease-in-out ${i * 0.3}s infinite`,
                 }}
               >
@@ -126,7 +131,7 @@ export function EntryScreen({
                     background:
                       "linear-gradient(135deg, #ff1744, #d50000, #ff4d6d)",
                     filter:
-                      "drop-shadow(0 0 10px rgba(255, 0, 50, 0.75))",
+                      "drop-shadow(0 0 9px rgba(255, 0, 50, 0.7))",
                   }}
                 >
                   <img
@@ -149,43 +154,46 @@ export function EntryScreen({
         </div>
 
         {/* ===================================================
-            CENTER CARTOON COUPLE
+            CENTER COUPLE
         =================================================== */}
 
-        <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            z-10
-            h-[56%]
-            w-[56%]
-            -translate-x-1/2
-            -translate-y-1/2
+       <div
+  className="
+    absolute
+    left-1/2
+    top-1/2
+    z-10
+    h-[70%]
+    w-[70%]
+    -translate-x-1/2
+    -translate-y-1/2
 
-            sm:h-[58%]
-            sm:w-[58%]
+    sm:h-[72%]
+    sm:w-[72%]
 
-            md:h-[60%]
-            md:w-[60%]
-          "
-        >
-          <img
-            src={couple}
-            alt="Cartoon couple holding a glowing heart"
-            width={1024}
-            height={1024}
-            draggable={false}
-            className="
-              animate-drift
-              animate-glow-pulse
-              h-full
-              w-full
-              select-none
-              object-contain
-            "
-          />
-        </div>
+    md:h-[74%]
+    md:w-[74%]
+
+    lg:h-[76%]
+    lg:w-[76%]
+  "
+>
+  <img
+    src={couple}
+    alt="Cartoon couple holding a glowing heart"
+    width={1024}
+    height={1024}
+    draggable={false}
+    className="
+      animate-drift
+      animate-glow-pulse
+      h-full
+      w-full
+      select-none
+      object-contain
+    "
+  />
+</div>
       </div>
 
       {/* =====================================================
@@ -194,17 +202,17 @@ export function EntryScreen({
 
       <h1
         className="
-          mt-7
+          mt-5
           max-w-[95vw]
           font-script
           text-4xl
           leading-tight
           text-rose-grad
 
-          sm:mt-9
+          sm:mt-7
           sm:text-5xl
 
-          md:mt-10
+          md:mt-9
           md:text-6xl
 
           lg:text-7xl
@@ -224,20 +232,24 @@ export function EntryScreen({
           mx-auto
           mt-4
           w-full
-          max-w-[92vw]
+          max-w-[94vw]
           whitespace-pre-wrap
           break-words
+          text-center
           font-display
-          text-base
-          leading-relaxed
+          text-[15px]
+          leading-[1.8]
           text-foreground/90
 
           sm:mt-5
           sm:max-w-2xl
           sm:text-lg
+          sm:leading-8
 
           md:mt-6
+          md:max-w-3xl
           md:text-xl
+          md:leading-relaxed
 
           lg:text-2xl
         "
@@ -249,7 +261,8 @@ export function EntryScreen({
 
       <button
         type="button"
-        onMouseEnter={() => setHoverHearts((n) => n + 1)}
+        onMouseEnter={createHearts}
+        onTouchStart={createHearts}
         onClick={() => {
           playChime(880);
           onSurprise();
@@ -258,27 +271,28 @@ export function EntryScreen({
           animate-heartbeat
           group
           relative
-          mt-8
+          mt-7
           w-full
           max-w-[340px]
           rounded-full
           px-5
-          py-4
+          py-3.5
           font-display
           text-sm
           font-semibold
           leading-relaxed
           text-primary-foreground
           transition
+          duration-300
           active:scale-95
 
-          sm:mt-10
+          sm:mt-9
           sm:max-w-[440px]
           sm:px-7
           sm:py-4
           sm:text-base
 
-          md:mt-12
+          md:mt-11
           md:max-w-[500px]
           md:px-8
           md:py-5
@@ -298,7 +312,7 @@ export function EntryScreen({
         =================================================== */}
 
         <span
-          aria-hidden
+          aria-hidden="true"
           className="
             pointer-events-none
             absolute
@@ -314,6 +328,7 @@ export function EntryScreen({
                   absolute
                   bottom-2
                   text-lg
+
                   sm:text-xl
                 "
                 style={
