@@ -143,7 +143,7 @@ export function Ambience() {
             animation: `fallDown ${r.dur}s linear ${r.delay}s infinite`,
           }}
         >
-          🌹
+          🏵️
         </span>
       ))}
     </div>
