@@ -134,7 +134,7 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
   const [noCount, setNoCount] = useState(0);
   const [chosen, setChosen] = useState(false);
 
-  const best = photos[16]!;
+  const best = photos[13]!;
 
   const doneCalled = useRef(false);
 
