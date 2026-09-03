@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { photos } from "@/lib/photos";
-import { playChime } from "@/lib/sfx";
+import {
+  playChime,
+  playClap,
+  playFirecracker,
+  playNo,
+} from "@/lib/sfx";
 import { HeartBurst } from "./HeartBurst";
 
 const HEART_MASK =
@@ -154,18 +159,29 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
     setDaysOpen(true);
   };
 
-  const chooseYes = () => {
-    playChime(880);
-    setChosen(true);
-  };
+ const chooseYes = () => {
+  playFirecracker();
+  playClap();
+  setChosen(true);
+};
 
-  const chooseNo = () => {
-    playChime(420);
-
-    setNoCount((current) =>
-      Math.min(current + 1, NO_MESSAGES.length),
+const chooseNo = () => {
+  setNoCount((current) => {
+    const next = Math.min(
+      current + 1,
+      NO_MESSAGES.length,
     );
-  };
+
+    // current = 0 → No1
+    // current = 1 → No2
+    // current = 2 → No3
+    // current = 3 → No4
+    // current = 4 → No5
+    playNo(current);
+
+    return next;
+  });
+};
 
   const noScale = Math.max(0, 1 - noCount * 0.2);
 
@@ -705,19 +721,20 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
                 🥺❤️
               </div>
 
-              <p
-                className="
-                  mt-6
-                  font-display text-xs
-                  uppercase tracking-[0.16em]
-                  text-rose-grad
-                  sm:text-sm
-                  sm:tracking-[0.2em]
-                  md:text-base
-                "
-              >
-                Madhu...
-              </p>
+             <p
+  className="
+    mt-6
+    font-display text-2xl
+    font-semibold
+    uppercase tracking-[0.16em]
+    text-rose-grad
+    sm:text-3xl
+    sm:tracking-[0.2em]
+    md:text-4xl
+  "
+>
+  Madhu...
+</p>
 
               <h2
                 className="
@@ -933,25 +950,28 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
                 )}
 
               {noCount >= NO_MESSAGES.length && (
-                <p
-                  className="
-                    animate-rise-in
-                    mx-auto mt-6
-                    max-w-[92vw]
-                    break-words px-2
-                    font-display
-                    text-sm
-                    font-semibold
-                    leading-7
-                    text-rose-grad
-                    sm:mt-7
-                    sm:text-base
-                  "
-                >
-                  Okay... NO has officially disappeared. 😂❤️
-                  <br />
-                  Now there&apos;s only one answer left. 😌
-                </p>
+               <p
+  className="
+    animate-rise-in
+    mx-auto mt-6
+    max-w-[92vw]
+    break-words px-2
+    font-display
+    text-base
+    font-semibold
+    leading-7
+    text-rose-grad
+    sm:mt-7
+    sm:text-lg
+    sm:leading-8
+    md:text-xl
+    md:leading-9
+  "
+>
+  Okay... NO has officially disappeared. 😂❤️
+  <br />
+  Now there&apos;s only one answer left. 😌
+</p>
               )}
             </div>
           )}
@@ -997,22 +1017,34 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
                   ❤️
                 </div>
 
-                <p
-                  className="
-                    mt-6
-                    text-center
-                    font-display text-xs
-                    uppercase
-                    tracking-[0.16em]
-                    text-rose-grad
-                    sm:mt-7
-                    sm:text-sm
-                    sm:tracking-[0.2em]
-                    md:text-base
-                  "
-                >
-                  I Knew It 😌
-                </p>
+              <p
+  className="
+    mt-6
+    text-center
+    font-display
+    text-2xl
+    font-semibold
+    uppercase
+    tracking-[0.16em]
+    text-rose-grad
+    sm:mt-7
+    sm:text-3xl
+    sm:tracking-[0.2em]
+    md:text-4xl
+  "
+>
+  I Knew It{" "}
+  <span
+    aria-hidden="true"
+    className="not-italic"
+    style={{
+      fontFamily:
+        '"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif',
+    }}
+  >
+    😌
+  </span>
+</p>
 
                 <h2
                   className="
