@@ -20,6 +20,35 @@ export const heartMaskStyle: React.CSSProperties = {
   maskRepeat: "no-repeat",
 };
 
+/* =========================================================
+   EMOJI STYLE
+========================================================= */
+
+const emojiStyle: React.CSSProperties = {
+  fontFamily:
+    '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
+  color: "initial",
+  WebkitTextFillColor: "initial",
+  background: "none",
+};
+
+/* =========================================================
+   GRADIENT TEXT STYLE
+========================================================= */
+
+const gradientTextStyle: React.CSSProperties = {
+  background: "var(--gradient-rose)",
+  backgroundSize: "200% auto",
+  backgroundClip: "text",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+  animation: "shimmer 4s linear infinite",
+};
+
+/* =========================================================
+   FIREWORKS
+========================================================= */
+
 function Fireworks() {
   const shells = useMemo(
     () =>
@@ -76,6 +105,10 @@ function Fireworks() {
   );
 }
 
+/* =========================================================
+   PROMISES
+========================================================= */
+
 const PROMISES = [
   {
     icon: "❤️",
@@ -104,6 +137,10 @@ const PROMISES = [
   },
 ];
 
+/* =========================================================
+   NO MESSAGES
+========================================================= */
+
 const NO_MESSAGES = [
   {
     text: "Are you sure?",
@@ -131,6 +168,10 @@ type FinalSurpriseProps = {
   onDone?: () => void;
 };
 
+/* =========================================================
+   COMPONENT
+========================================================= */
+
 export function FinalSurprise({ onDone }: FinalSurpriseProps) {
   const [opened, setOpened] = useState(false);
   const [promiseIndex, setPromiseIndex] = useState(-1);
@@ -143,10 +184,18 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
 
   const doneCalled = useRef(false);
 
+  /* =========================================================
+     OPEN SURPRISE
+  ========================================================= */
+
   const openSurprise = () => {
     playChime(660);
     setOpened(true);
   };
+
+  /* =========================================================
+     NEXT PROMISE
+  ========================================================= */
 
   const nextPromise = () => {
     playChime(720);
@@ -159,36 +208,36 @@ export function FinalSurprise({ onDone }: FinalSurpriseProps) {
     setDaysOpen(true);
   };
 
- const chooseYes = () => {
-  playFirecracker();
-  playClap();
-  setChosen(true);
-};
+  /* =========================================================
+     YES
+  ========================================================= */
 
-const chooseNo = () => {
-  setNoCount((current) => {
-    const next = Math.min(
-      current + 1,
-      NO_MESSAGES.length,
-    );
+  const chooseYes = () => {
+    playFirecracker();
+    playClap();
+    setChosen(true);
+  };
 
-    // current = 0 → No1
-    // current = 1 → No2
-    // current = 2 → No3
-    // current = 3 → No4
-    // current = 4 → No5
-    playNo(current);
+  /* =========================================================
+     NO
+  ========================================================= */
 
-    return next;
-  });
-};
+  const chooseNo = () => {
+    setNoCount((current) => {
+      const next = Math.min(current + 1, NO_MESSAGES.length);
+
+      playNo(current);
+
+      return next;
+    });
+  };
 
   const noScale = Math.max(0, 1 - noCount * 0.2);
 
-  /*
-   * The final surprise is considered complete after the final
-   * HeartBurst area has been displayed for a short moment.
-   */
+  /* =========================================================
+     DONE CALLBACK
+  ========================================================= */
+
   useEffect(() => {
     if (!chosen || doneCalled.current) return;
 
@@ -242,12 +291,20 @@ const chooseNo = () => {
               break-words
               font-script text-[2.65rem]
               leading-[1.12]
-              text-rose-grad
               sm:text-5xl
               md:text-6xl
             "
           >
-            One Last Surprise ❤️
+            <span className="text-rose-grad">
+              One Last Surprise
+            </span>{" "}
+            <span
+              aria-hidden="true"
+              className="inline-block not-italic"
+              style={emojiStyle}
+            >
+              ❤️
+            </span>
           </h2>
 
           <p
@@ -308,10 +365,7 @@ const chooseNo = () => {
                 text-7xl
                 sm:text-8xl
               "
-              style={{
-                fontFamily:
-                  '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-              }}
+              style={emojiStyle}
             >
               🎁
             </span>
@@ -327,7 +381,14 @@ const chooseNo = () => {
                 md:text-2xl
               "
             >
-              Open My Heart ❤️
+              Open My Heart{" "}
+              <span
+                aria-hidden="true"
+                className="inline-block not-italic"
+                style={emojiStyle}
+              >
+                ❤️
+              </span>
             </span>
 
             <span
@@ -373,7 +434,14 @@ const chooseNo = () => {
                   md:text-base
                 "
               >
-                Just Between Us ❤️
+                Just Between Us{" "}
+                <span
+                  aria-hidden="true"
+                  className="inline-block not-italic"
+                  style={emojiStyle}
+                >
+                  ❤️
+                </span>
               </p>
 
               <h2
@@ -434,10 +502,7 @@ const chooseNo = () => {
                       animate-heartbeat
                       text-6xl sm:text-7xl
                     "
-                    style={{
-                      fontFamily:
-                        '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                    }}
+                    style={emojiStyle}
                   >
                     💌
                   </span>
@@ -462,7 +527,14 @@ const chooseNo = () => {
                       sm:text-base
                     "
                   >
-                    I made these just for you ❤️
+                    I made these just for you{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </span>
                 </button>
               )}
@@ -491,13 +563,8 @@ const chooseNo = () => {
                   >
                     <div
                       aria-hidden
-                      className="
-                        text-6xl sm:text-7xl
-                      "
-                      style={{
-                        fontFamily:
-                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                      }}
+                      className="text-6xl sm:text-7xl"
+                      style={emojiStyle}
                     >
                       {PROMISES[promiseIndex]!.icon}
                     </div>
@@ -593,7 +660,14 @@ const chooseNo = () => {
                   md:text-base
                 "
               >
-                Keep This Close ❤️
+                Keep This Close{" "}
+                <span
+                  aria-hidden="true"
+                  className="inline-block"
+                  style={emojiStyle}
+                >
+                  ❤️
+                </span>
               </p>
 
               <h2
@@ -687,7 +761,14 @@ const chooseNo = () => {
                   boxShadow: "var(--shadow-glow)",
                 }}
               >
-                One Last Question ❤️
+                One Last Question{" "}
+                <span
+                  aria-hidden="true"
+                  className="inline-block"
+                  style={emojiStyle}
+                >
+                  ❤️
+                </span>
               </button>
             </div>
           )}
@@ -713,28 +794,25 @@ const chooseNo = () => {
                   animate-heartbeat
                   text-6xl sm:text-8xl
                 "
-                style={{
-                  fontFamily:
-                    '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                }}
+                style={emojiStyle}
               >
                 🥺❤️
               </div>
 
-             <p
-  className="
-    mt-6
-    font-display text-2xl
-    font-semibold
-    uppercase tracking-[0.16em]
-    text-rose-grad
-    sm:text-3xl
-    sm:tracking-[0.2em]
-    md:text-4xl
-  "
->
-  Madhu...
-</p>
+              <p
+                className="
+                  mt-6
+                  font-display text-2xl
+                  font-semibold
+                  uppercase tracking-[0.16em]
+                  text-rose-grad
+                  sm:text-3xl
+                  sm:tracking-[0.2em]
+                  md:text-4xl
+                "
+              >
+                Madhu...
+              </p>
 
               <h2
                 className="
@@ -747,7 +825,14 @@ const chooseNo = () => {
                   md:text-6xl
                 "
               >
-                Would You Choose Me Again? ❤️
+                Would You Choose Me Again?{" "}
+                <span
+                  aria-hidden="true"
+                  className="inline-block"
+                  style={emojiStyle}
+                >
+                  ❤️
+                </span>
               </h2>
 
               <p
@@ -828,10 +913,7 @@ const chooseNo = () => {
                         sm:text-4xl
                         md:text-5xl
                       "
-                      style={{
-                        fontFamily:
-                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                      }}
+                      style={emojiStyle}
                     >
                       {NO_MESSAGES[noCount - 1]!.emoji}
                     </span>
@@ -950,28 +1032,41 @@ const chooseNo = () => {
                 )}
 
               {noCount >= NO_MESSAGES.length && (
-               <p
-  className="
-    animate-rise-in
-    mx-auto mt-6
-    max-w-[92vw]
-    break-words px-2
-    font-display
-    text-base
-    font-semibold
-    leading-7
-    text-rose-grad
-    sm:mt-7
-    sm:text-lg
-    sm:leading-8
-    md:text-xl
-    md:leading-9
-  "
->
-  Okay... NO has officially disappeared. 😂❤️
-  <br />
-  Now there&apos;s only one answer left. 😌
-</p>
+                <p
+                  className="
+                    animate-rise-in
+                    mx-auto mt-6
+                    max-w-[92vw]
+                    break-words px-2
+                    font-display
+                    text-base
+                    font-semibold
+                    leading-7
+                    text-rose-grad
+                    sm:mt-7
+                    sm:text-lg
+                    sm:leading-8
+                    md:text-xl
+                    md:leading-9
+                  "
+                >
+                  Okay... NO has officially disappeared. 😂❤️
+                  <br />
+                  Now there&apos;s only one answer left.{" "}
+                  <span
+                    aria-hidden="true"
+                    className="
+                      inline-block
+                      text-2xl
+                      leading-none
+                      sm:text-3xl
+                      md:text-4xl
+                    "
+                    style={emojiStyle}
+                  >
+                    😌
+                  </span>
+                </p>
               )}
             </div>
           )}
@@ -1009,42 +1104,44 @@ const chooseNo = () => {
                     animate-heartbeat
                     text-7xl sm:text-8xl
                   "
-                  style={{
-                    fontFamily:
-                      '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                  }}
+                  style={emojiStyle}
                 >
                   ❤️
                 </div>
 
-              <p
-  className="
-    mt-6
-    text-center
-    font-display
-    text-2xl
-    font-semibold
-    uppercase
-    tracking-[0.16em]
-    text-rose-grad
-    sm:mt-7
-    sm:text-3xl
-    sm:tracking-[0.2em]
-    md:text-4xl
-  "
->
-  I Knew It{" "}
-  <span
-    aria-hidden="true"
-    className="not-italic"
-    style={{
-      fontFamily:
-        '"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif',
-    }}
-  >
-    😌
-  </span>
-</p>
+                {/* =================================================
+                    I KNEW IT
+                ================================================= */}
+
+                <p
+                  className="
+                    mt-6
+                    text-center
+                    font-display
+                    text-2xl
+                    font-semibold
+                    uppercase
+                    tracking-[0.16em]
+                    text-rose-grad
+                    sm:mt-7
+                    sm:text-3xl
+                    sm:tracking-[0.2em]
+                    md:text-4xl
+                  "
+                >
+                  I Knew It{" "}
+                  <span
+                    aria-hidden="true"
+                    className="inline-block not-italic"
+                    style={emojiStyle}
+                  >
+                    😌
+                  </span>
+                </p>
+
+                {/* =================================================
+                    I CHOOSE YOU
+                ================================================= */}
 
                 <h2
                   className="
@@ -1063,8 +1160,19 @@ const chooseNo = () => {
                 >
                   I Choose You.
                   <br />
-                  Every Single Time. ❤️
+                  Every Single Time.{" "}
+                  <span
+                    aria-hidden="true"
+                    className="inline-block not-italic"
+                    style={emojiStyle}
+                  >
+                    ❤️
+                  </span>
                 </h2>
+
+                {/* =================================================
+                    MARATHI MESSAGE
+                ================================================= */}
 
                 <div
                   className="
@@ -1103,10 +1211,21 @@ const chooseNo = () => {
                     <br />
 
                     <span className="font-semibold text-rose-grad">
-                      माझी निवड नेहमी तूच असशील. ❤️
+                      माझी निवड नेहमी तूच असशील.{" "}
+                      <span
+                        aria-hidden="true"
+                        className="inline-block"
+                        style={emojiStyle}
+                      >
+                        ❤️
+                      </span>
                     </span>
                   </p>
                 </div>
+
+                {/* =================================================
+                    FINAL PROMISE
+                ================================================= */}
 
                 <div
                   className="
@@ -1151,13 +1270,24 @@ const chooseNo = () => {
                     <br />
                     आणि त्या प्रत्येक दिवसात
                     <br />
-                    तुलाच माझ्या सोबत पाहायचं आहे.” ❤️
+                    तुलाच माझ्या सोबत पाहायचं आहे.”{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
                 </div>
 
+                {/* =================================================
+                    PROMISE MADE
+                ================================================= */}
+
                 <p
                   className="
-                    mt-12
+                    relative mt-12
                     px-2
                     text-center
                     font-script
@@ -1167,19 +1297,36 @@ const chooseNo = () => {
                     sm:text-5xl
                     md:text-6xl
                   "
-                  style={{
-                    background: "var(--gradient-rose)",
-                    backgroundSize: "200% auto",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
-                    animation: "shimmer 4s linear infinite",
-                  }}
                 >
-                  Promise Made.
-                  <br />
-                  Forever Kept. ♾️
+                  <span style={gradientTextStyle}>
+                    Promise Made.
+                    <br />
+                    Forever Kept.
+                  </span>{" "}
+                  <span
+                    aria-hidden="true"
+                    className="
+                      inline-block
+                      not-italic
+                      text-[2.2rem]
+                      sm:text-5xl
+                      md:text-6xl
+                    "
+                    style={{
+                      fontFamily:
+                        '"Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", sans-serif',
+                      color: "initial",
+                      WebkitTextFillColor: "initial",
+                      background: "none",
+                    }}
+                  >
+                    ♾️
+                  </span>
                 </p>
+
+                {/* =================================================
+                    FINAL SECTION
+                ================================================= */}
 
                 <div
                   className="
@@ -1208,7 +1355,14 @@ const chooseNo = () => {
                       md:text-base
                     "
                   >
-                    For the woman I love ❤️
+                    For the woman I love{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
 
                   <h3
@@ -1229,8 +1383,19 @@ const chooseNo = () => {
                   >
                     Happy Birthday
                     <br />
-                    My Beautiful Wife ❤️
+                    My Beautiful Wife{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </h3>
+
+                  {/* =================================================
+                      HEART
+                  ================================================= */}
 
                   <div
                     className="
@@ -1294,9 +1459,20 @@ const chooseNo = () => {
                     >
                       You are not just a part of my life...
                       <br />
-                      You are my life. ❤️
+                      You are my life.{" "}
+                      <span
+                        aria-hidden="true"
+                        className="inline-block"
+                        style={emojiStyle}
+                      >
+                        ❤️
+                      </span>
                     </p>
                   </div>
+
+                  {/* =================================================
+                      MEMORY HEART
+                  ================================================= */}
 
                   <div
                     className="
@@ -1365,8 +1541,19 @@ const chooseNo = () => {
                       sm:text-base
                     "
                   >
-                    One of my favourite memories with you ❤️
+                    One of my favourite memories with you{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
+
+                  {/* =================================================
+                      FOREVER & ALWAYS
+                  ================================================= */}
 
                   <p
                     className="
@@ -1381,17 +1568,28 @@ const chooseNo = () => {
                       sm:text-5xl
                       md:text-6xl
                     "
-                    style={{
-                      background: "var(--gradient-rose)",
-                      backgroundSize: "200% auto",
-                      backgroundClip: "text",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
-                      animation: "shimmer 4s linear infinite",
-                    }}
                   >
-                    Forever &amp; Always ❤️
+                    <span style={gradientTextStyle}>
+                      Forever &amp; Always
+                    </span>{" "}
+                    <span
+                      aria-hidden="true"
+                      className="
+                        inline-block
+                        not-italic
+                        text-[2.3rem]
+                        sm:text-5xl
+                        md:text-6xl
+                      "
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
+
+                  {/* =================================================
+                      ALWAYS CHOOSE YOU
+                  ================================================= */}
 
                   <div
                     className="
@@ -1419,9 +1617,20 @@ const chooseNo = () => {
                     >
                       No matter where life takes us,
                       <br />
-                      I will always choose you. ❤️
+                      I will always choose you.{" "}
+                      <span
+                        aria-hidden="true"
+                        className="inline-block"
+                        style={emojiStyle}
+                      >
+                        ❤️
+                      </span>
                     </p>
                   </div>
+
+                  {/* =================================================
+                      ONCE AGAIN
+                  ================================================= */}
 
                   <p
                     className="
@@ -1443,8 +1652,19 @@ const chooseNo = () => {
                   >
                     Once Again,
                     <br />
-                    Happy Birthday My Love ❤️
+                    Happy Birthday My Love{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
+
+                  {/* =================================================
+                      SIGNATURE
+                  ================================================= */}
 
                   <p
                     className="
@@ -1460,7 +1680,14 @@ const chooseNo = () => {
                       sm:text-base
                     "
                   >
-                    With all my love, forever yours. ❤️
+                    With all my love, forever yours.{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block"
+                      style={emojiStyle}
+                    >
+                      ❤️
+                    </span>
                   </p>
 
                   <div
