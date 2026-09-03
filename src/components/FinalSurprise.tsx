@@ -144,7 +144,7 @@ const PROMISES = [
 const NO_MESSAGES = [
   {
     text: "Are you sure?",
-    emoji: "🥺❤️",
+    emoji: "😲❤️",
   },
   {
     text: "Really?",
@@ -152,7 +152,7 @@ const NO_MESSAGES = [
   },
   {
     text: "Madhu... seriously?",
-    emoji: "😂",
+    emoji: "😱",
   },
   {
     text: "Okay... I'll ask one more time.",
